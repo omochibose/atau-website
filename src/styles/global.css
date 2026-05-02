@@ -38,9 +38,15 @@
   --border-medium: rgba(240, 235, 224, 0.15);
   --border-strong: rgba(240, 235, 224, 0.30);
 
-  /** ビューポート左端のシグナルライン（全ページ共通） */
+  /** ビューポート左端のスクロールインジケーター */
   --site-edge-line-width: 2px;
-  --site-edge-line-glow: oklch(0.72 0.18 220 / 0.22);
+  /** 未読レール（常時フル高のうすいガイド） */
+  --site-edge-rail: rgba(240, 235, 224, 0.06);
+  /** スクロール済みの塗り（薄めのブルーで視認性を確保） */
+  --site-edge-fill: oklch(0.58 0.07 220 / 0.38);
+  --site-edge-fill-glow: oklch(0.62 0.08 220 / 0.09);
+  /** 0〜1。スクロール進捗に合わせて JS が更新 */
+  --scroll-progress: 0;
 }
 
 *,
@@ -64,20 +70,35 @@ body {
 }
 
 /**
- * ディスプレイ左端の Signal Blue ライン（背景アクセント）
- * ヘッダーより前面に出しつつ pointer-events で操作を阻害しない
+ * 左端: うすいレール（::after 常時フル高）＋ スクロールに応じて伸びる塗り（::before）
+ * 塗りは低彩度・半透明のブルー。z-59/60 でヘッダー(50)より前、pointer-events なし。
  */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--site-edge-line-width);
+  height: 100dvh;
+  max-height: 100dvh;
+  z-index: 59;
+  pointer-events: none;
+  background-color: var(--site-edge-rail);
+}
+
 body::before {
   content: '';
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
   width: var(--site-edge-line-width);
+  height: calc(var(--scroll-progress) * 100dvh);
+  max-height: 100dvh;
   z-index: 60;
   pointer-events: none;
-  background-color: var(--color-signal-blue);
-  box-shadow: 0 0 14px 1px var(--site-edge-line-glow);
+  background-color: var(--site-edge-fill);
+  box-shadow: 0 0 10px 0.5px var(--site-edge-fill-glow);
+  transform-origin: top center;
 }
 
 main {
