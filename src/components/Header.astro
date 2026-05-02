@@ -1,0 +1,84 @@
+---
+import BaseButton from './BaseButton.astro';
+import LayoutContainer from './LayoutContainer.astro';
+
+const navLinks = [
+  { href: '/',          label: 'Home'     },
+  { href: '/about',    label: 'About'    },
+  { href: '/business', label: 'Business' },
+  { href: '/blog',     label: 'Blog'     },
+  { href: '/contact',  label: 'Contact'  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 border-b"
+  style="border-color: var(--border-subtle); background-color: rgba(10, 9, 5, 0.92); backdrop-filter: blur(12px);"
+>
+  <LayoutContainer class="flex h-16 items-center justify-between">
+    <!-- Logo -->
+    <a
+      href="/"
+      class="font-display font-bold text-xl text-cream tracking-tight"
+      style="letter-spacing: -0.03em;"
+    >
+      ATAU
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
+            currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+              ? 'text-signal-blue'
+              : 'text-dust hover:text-cream'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Desktop CTA（Gold：補助の行動導線） -->
+    <BaseButton href="/contact" variant="secondary" size="sm" class="hidden md:inline-flex">
+      Contact
+    </BaseButton>
+
+    <!-- Mobile Menu Toggle -->
+    <input type="checkbox" id="menu-toggle" class="hidden peer" aria-label="Toggle menu" />
+    <label for="menu-toggle" class="md:hidden cursor-pointer text-dust hover:text-cream transition-colors p-1">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+        <line x1="2" y1="5"  x2="20" y2="5"  />
+        <line x1="2" y1="11" x2="20" y2="11" />
+        <line x1="2" y1="17" x2="20" y2="17" />
+      </svg>
+    </label>
+  </LayoutContainer>
+
+  <!-- Mobile Nav -->
+  <div
+    class="hidden peer-checked:block md:hidden border-t"
+    style="border-color: var(--border-subtle); background-color: rgba(10, 9, 5, 0.97);"
+  >
+    <LayoutContainer class="py-4">
+      <nav class="flex flex-col gap-1" aria-label="Mobile navigation">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class="font-mono text-xs uppercase tracking-widest text-dust hover:text-cream transition-colors py-3 border-b"
+            style="border-color: var(--border-subtle);"
+          >
+            {link.label}
+          </a>
+        ))}
+        <BaseButton href="/contact" variant="secondary" size="sm" class="md:hidden w-full justify-center mt-3 py-3">
+          Contact
+        </BaseButton>
+      </nav>
+    </LayoutContainer>
+  </div>
+</header>

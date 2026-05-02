@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PillarCard from '../components/PillarCard.astro';
+import BaseButton from '../components/BaseButton.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Home" description="ATAUは挑戦しやすい社会を創ることをミッションとする会社です。">
+
+  <!-- Hero -->
+  <section class="bg-grid-6 min-h-screen flex flex-col justify-center pt-24 pb-16">
+    <LayoutContainer class="relative z-10">
+        <div class="min-w-0">
+            <p class="text-center font-display font-bold text-xs uppercase tracking-widest text-cream mb-4" style="font-size: clamp(1.5rem, 8vw, 2rem);">Inspire Ambition</p>
+            <h1
+              class="text-center font-display font-bold text-cream mb-8"
+              style="font-size: clamp(0.5rem, 8vw, 1.3rem); letter-spacing: -0.03em; line-height: 1.0;"
+            >
+              挑戦しやすい社会を創る
+            </h1>
+            <p class="text-center font-body text-dust text-sm leading-relaxed sm:text-base md:text-lg mb-8">
+              皆が挑戦しやすい社会はきっと素晴らしい。<br />
+              ATAUは「挑戦しやすい社会を創る」という挑戦に取り組んでいます。
+            </p>
+            <div class="flex justify-center flex-row gap-4">
+              <BaseButton href="/business" variant="primary" size="sm">Our Business</BaseButton>
+              <BaseButton href="/about" variant="secondary" size="sm">About Us</BaseButton>
+            </div>
+          <div class="mt-8 flex flex-col items-center">
+            <img
+              src="/atau_hero_image.svg"
+              alt="ATAUのブランドを象徴するヒーローイラスト"
+              width="1080"
+              height="1080"
+              class="h-auto w-2/3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg select-none"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
+            <p class="px-2 text-center font-body text-xs text-ash sm:text-sm">
+              CC0 art by{' '}
+              <a
+                href="https://www.transhumans.xyz/about"
+                class="text-dust underline decoration-white/20 underline-offset-[3px] transition-colors hover:text-cream"
+                target="_blank"
+                rel="noopener noreferrer">Pablo Stanley</a>
+            </p>
+          </div>
+        </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Three Pillars -->
+  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <div class="mb-12">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Business</p>
+        <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
+          事業の三本柱
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <PillarCard
+          number="01"
+          title="Inspire"
+          subtitle="挑戦を生み出す"
+          description="ATAUが率先して高い目標に挑戦することで、他者に挑戦する勇気を。自社の挑戦そのものがプロダクトであり、メッセージである。"
+        />
+        <PillarCard
+          number="02"
+          title="Amplify"
+          subtitle="挑戦を広める"
+          description="自社および他者の挑戦のプロセスと成果を広報・発信することで、前例を社会に蓄積する。前例は次の挑戦者の勇気になる。"
+        />
+        <PillarCard
+          number="03"
+          title="Empower"
+          subtitle="挑戦を後押しする"
+          description="挑戦の過程で獲得した知見をサービス・プロダクトとして昇華し、他者の挑戦を実質的に支援する。"
+        />
+      </div>
+      <div class="mt-8 text-right">
+        <a href="/business" class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity">
+          Learn More →
+        </a>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Values -->
+  <section class="border-t py-24" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <div class="mb-12">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Values</p>
+        <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
+          私たちの価値観
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="p-8 border" style="border-color: var(--border-subtle); border-radius: var(--radius-lg);">
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 01</p>
+          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">温故知新</h3>
+          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Standing on Giants' Shoulders</p>
+          <p class="font-body text-dust text-sm leading-relaxed">
+            何かから学ぶという行為は、対象への敬意なくして為し得ない。先人の積み上げた知見と礎に敬意を払い、そこから新たな知を能動的に引き出すことを大切にする。
+          </p>
+        </div>
+        <div class="p-8 border" style="border-color: var(--border-subtle); border-radius: var(--radius-lg);">
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 02</p>
+          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">パンクたれ！</h3>
+          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Stay Punk!</p>
+          <p class="font-body text-dust text-sm leading-relaxed">
+            挑戦とは常に現状打破である。先人の功績をただ享受するのではなく、次の世代に何かを手渡せるよう、自らの意志で一歩を踏み出す姿勢（Do It Yourself）を持ち続ける。
+          </p>
+        </div>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Latest Blog Posts -->
+  {posts.length > 0 && (
+    <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+      <LayoutContainer>
+        <div class="flex justify-between items-end mb-12">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Latest</p>
+            <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">Blog</h2>
+          </div>
+          <a href="/blog" class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity">
+            All Posts →
+          </a>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          {posts.map(post => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="block p-6 border group hover:border-signal-blue transition-colors duration-200"
+              style="border-color: var(--border-subtle); border-radius: var(--radius-lg);"
+            >
+              <p class="font-mono text-xs text-ash mb-3">
+                {post.data.pubDate.toLocaleDateString('ja-JP')}
+              </p>
+              <h3
+                class="font-display font-semibold text-lg text-cream group-hover:text-signal-blue transition-colors mb-3"
+                style="letter-spacing: -0.01em;"
+              >
+                {post.data.title}
+              </h3>
+              <p class="font-body text-dust text-sm leading-relaxed line-clamp-3">
+                {post.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </LayoutContainer>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="bg-grid-6 border-t py-32" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="text-center relative z-10">
+      <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-6">Get in Touch</p>
+      <h2
+        class="font-display font-bold text-cream mb-6"
+        style="font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em; line-height: 1.0;"
+      >
+        一緒に挑戦しよう
+      </h2>
+      <p class="font-body text-dust text-lg max-w-lg mx-auto leading-relaxed mb-10">
+        ATAUとの協業・採用に関するお問い合わせはこちらから。
+      </p>
+      <BaseButton href="/contact" variant="primary" size="lg">Contact Us</BaseButton>
+    </LayoutContainer>
+  </section>
+
+</BaseLayout>

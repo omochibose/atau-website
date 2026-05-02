@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LayoutContainer from '../../components/LayoutContainer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog" description="ATAUブログ — 挑戦の記録">
+
+  <!-- Page Header -->
+  <section class="pt-40 pb-16">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Journal</p>
+      <h1
+        class="font-display font-bold text-cream"
+        style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: -0.03em; line-height: 1.0;"
+      >
+        Blog
+      </h1>
+    </LayoutContainer>
+  </section>
+
+  <!-- Post List -->
+  <section class="border-t pb-24" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="pt-12">
+      {posts.length === 0 ? (
+        <p class="font-body text-dust py-16 text-center">記事はまだありません。</p>
+      ) : (
+        <div>
+          {posts.map(post => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="flex flex-col sm:flex-row gap-6 py-8 border-b group"
+              style="border-color: var(--border-subtle);"
+            >
+              <p class="font-mono text-xs text-ash shrink-0 sm:w-32 pt-1 tabular-nums">
+                {post.data.pubDate.toLocaleDateString('ja-JP')}
+              </p>
+              <div class="flex-1">
+                <h2
+                  class="font-display font-semibold text-2xl text-cream group-hover:text-signal-blue transition-colors mb-2"
+                  style="letter-spacing: -0.01em;"
+                >
+                  {post.data.title}
+                </h2>
+                <p class="font-body text-dust text-sm leading-relaxed mb-4">
+                  {post.data.description}
+                </p>
+                {post.data.tags && post.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2">
+                    {post.data.tags.map(tag => (
+                      <span
+                        class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border"
+                        style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </LayoutContainer>
+  </section>
+
+</BaseLayout>

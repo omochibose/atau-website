@@ -1,0 +1,75 @@
+---
+/**
+ * ボタン／リンク兼用のベース UI。variant・size・href を組み合わせて各所で使い分ける。
+ * - primary: Signal Blue（主行動）
+ * - secondary: Signal Gold 枠（補助行動）
+ */
+interface Props {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  /** 指定時は <a>、未指定時は <button> */
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  rel?: string;
+  target?: string;
+  disabled?: boolean;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  class: className = '',
+  rel,
+  target,
+  disabled = false,
+} = Astro.props;
+
+const sizeClasses = {
+  sm: 'px-4 py-2 text-xs',
+  md: 'px-8 py-4 text-sm',
+  lg: 'px-10 py-4 text-sm',
+} as const;
+
+const variantClasses =
+  variant === 'primary'
+    ? 'bg-signal-blue text-void hover:opacity-90 transition-opacity'
+    : 'border border-signal-gold text-signal-gold hover:bg-signal-gold hover:text-void transition-all duration-200';
+
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-void';
+
+const baseClasses = [
+  'inline-flex items-center justify-center font-mono uppercase tracking-widest no-underline',
+  sizeClasses[size],
+  variantClasses,
+  focusRing,
+  disabled ? 'pointer-events-none opacity-50' : '',
+  className,
+];
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={baseClasses}
+      rel={rel}
+      target={target}
+      style="border-radius: var(--radius-md);"
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      disabled={disabled}
+      class:list={baseClasses}
+      style="border-radius: var(--radius-md);"
+    >
+      <slot />
+    </button>
+  )
+}

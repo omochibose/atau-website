@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+---
+
+<BaseLayout title="About" description="ATAUについて — ミッション・バリュー・会社概要">
+
+  <!-- Page Header -->
+  <section class="pt-40 pb-16">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Company</p>
+      <h1
+        class="font-display font-bold text-cream"
+        style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: -0.03em; line-height: 1.0;"
+      >
+        About
+      </h1>
+    </LayoutContainer>
+  </section>
+
+  <!-- Mission -->
+  <section class="border-t py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Mission</p>
+        <h2
+          class="font-display font-bold text-4xl text-cream mb-2"
+          style="letter-spacing: -0.02em;"
+        >
+          挑戦しやすい<br />社会を創る
+        </h2>
+        <p class="font-mono text-xs uppercase tracking-widest text-dust mt-4">Inspire Ambition</p>
+      </div>
+      <div class="pt-8 md:pt-12">
+        <p class="font-body text-dust text-lg leading-relaxed">
+          挑戦とは、理想と現実の差を埋める行為である。ATAUはその意志が生まれやすい社会を創ることを存在の理由とする。
+        </p>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Values -->
+  <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Values</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-12" style="letter-spacing: -0.02em;">
+        価値観
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div
+          class="p-8 border"
+          style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: #1A1810;"
+        >
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 01</p>
+          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">
+            温故知新
+          </h3>
+          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">
+            Standing on Giants' Shoulders
+          </p>
+          <p class="font-body text-dust leading-relaxed">
+            何かから学ぶという行為は、対象への敬意なくして為し得ない。先人の積み上げた知見と礎に敬意を払い、そこから新たな知を能動的に引き出すことを大切にする。
+          </p>
+        </div>
+        <div
+          class="p-8 border"
+          style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: #1A1810;"
+        >
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 02</p>
+          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">
+            パンクたれ
+          </h3>
+          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Stay Punk</p>
+          <p class="font-body text-dust leading-relaxed">
+            挑戦とは常に現状打破である。先人の功績をただ享受するのではなく、次の世代に何かを手渡せるよう、自らの意志で一歩を踏み出す姿勢を持ち続ける。
+          </p>
+        </div>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Company Info -->
+  <section class="border-t py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Company Info</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-12" style="letter-spacing: -0.02em;">
+        会社概要
+      </h2>
+      <dl>
+        {[
+          { label: '社名',       value: 'ATAU' },
+          { label: '設立',       value: '2026年' },
+          { label: 'ミッション', value: '挑戦しやすい社会を創る' },
+          { label: 'ウェブサイト', value: 'atau.co.jp' },
+        ].map(({ label, value }) => (
+          <div
+            class="flex flex-col sm:flex-row gap-4 py-5 border-b"
+            style="border-color: var(--border-subtle);"
+          >
+            <dt class="font-mono text-xs uppercase tracking-widest text-ash w-36 shrink-0 pt-0.5">
+              {label}
+            </dt>
+            <dd class="font-body text-cream">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </LayoutContainer>
+  </section>
+
+</BaseLayout>

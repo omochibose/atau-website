@@ -1,0 +1,136 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+}
+
+const { title, description, pubDate, tags = [] } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="pt-32 pb-24">
+    <LayoutContainer>
+      <div class="max-w-3xl">
+        <header class="mb-12 pb-8 border-b" style="border-color: var(--border-subtle);">
+        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">
+          {pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+        <h1
+          class="font-display font-bold text-5xl text-cream mb-4"
+          style="letter-spacing: -0.03em; line-height: 1.05;"
+        >
+          {title}
+        </h1>
+        <p class="font-body text-dust text-lg leading-relaxed">{description}</p>
+        {tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-6">
+            {tags.map(tag => (
+              <span
+                class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border"
+                style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <div class="prose-atau">
+        <slot />
+      </div>
+
+      <div class="mt-16 pt-8 border-t" style="border-color: var(--border-subtle);">
+        <a
+          href="/blog"
+          class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity"
+        >
+          ← Back to Blog
+        </a>
+      </div>
+    </div>
+    </LayoutContainer>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose-atau :global(h2) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #F0EBE0;
+    letter-spacing: -0.02em;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  .prose-atau :global(h3) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #F0EBE0;
+    letter-spacing: -0.01em;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-atau :global(p) {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #B8B2A6;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .prose-atau :global(a) {
+    color: oklch(0.72 0.18 220);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-atau :global(strong) {
+    color: #F0EBE0;
+    font-weight: 600;
+  }
+  .prose-atau :global(code) {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.875rem;
+    color: oklch(0.78 0.16 195);
+    background-color: #1A1810;
+    padding: 0.125rem 0.375rem;
+    border-radius: 2px;
+  }
+  .prose-atau :global(pre) {
+    background-color: #1A1810;
+    padding: 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(240, 235, 224, 0.08);
+  }
+  .prose-atau :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+  .prose-atau :global(blockquote) {
+    border-left: 2px solid rgba(240, 235, 224, 0.15);
+    padding-left: 1.5rem;
+    color: #6B6660;
+    margin: 2rem 0;
+  }
+  .prose-atau :global(ul),
+  .prose-atau :global(ol) {
+    color: #B8B2A6;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .prose-atau :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .prose-atau :global(hr) {
+    border-color: rgba(240, 235, 224, 0.08);
+    margin: 3rem 0;
+  }
+</style>

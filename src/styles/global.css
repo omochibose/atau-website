@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  /* Layout — ヘッダー・本文・フッターで共通のコンテンツ幅 */
+  --page-max: 80rem;
+
+  /* Backgrounds */
+  --color-void: #0A0905;
+  --color-depth: #111009;
+  --color-surface: #1A1810;
+  --color-elevated: #252218;
+
+  /* Foreground */
+  --color-cream: #F0EBE0;
+  --color-dust: #B8B2A6;
+  --color-ash: #6B6660;
+  --color-ember: #3D3930;
+
+  /* Accents */
+  --color-signal-blue: oklch(0.72 0.18 220);
+  --color-signal-cyan: oklch(0.78 0.16 195);
+  --color-signal-gold: oklch(0.80 0.14 75);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'Noto Sans JP', sans-serif;
+
+  /* Border radius — sharp/futuristic */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+}
+
+:root {
+  --border-subtle: rgba(240, 235, 224, 0.08);
+  --border-medium: rgba(240, 235, 224, 0.15);
+  --border-strong: rgba(240, 235, 224, 0.30);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #0A0905;
+  color: #F0EBE0;
+  font-family: 'Noto Sans JP', sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  font-variant-numeric: tabular-nums;
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+/**
+ * 6 等分の縦ディバイダー（フルブリード背景用）
+ * セクションに `position: relative` を付与し、内側のコンテンツは `z-index` で前面に。
+ */
+.bg-grid-6 {
+  position: relative;
+}
+
+.bg-grid-6::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(100% / 6 - 1px),
+    rgba(240, 235, 224, 0.055) calc(100% / 6 - 1px),
+    rgba(240, 235, 224, 0.055) calc(100% / 6)
+  );
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+}
