@@ -38,13 +38,13 @@
   --border-medium: rgba(240, 235, 224, 0.15);
   --border-strong: rgba(240, 235, 224, 0.30);
 
-  /** ビューポート左端のスクロールインジケーター */
+  /** ビューポート左端のスクロールインジケーター（色相は --color-signal-blue と同一） */
   --site-edge-line-width: 2px;
-  /** 未読レール（常時フル高のうすいガイド） */
-  --site-edge-rail: rgba(240, 235, 224, 0.06);
-  /** スクロール済みの塗り（薄めのブルーで視認性を確保） */
-  --site-edge-fill: oklch(0.58 0.07 220 / 0.38);
-  --site-edge-fill-glow: oklch(0.62 0.08 220 / 0.09);
+  /** 未読レール: Signal Blue を極薄に */
+  --site-edge-rail: color-mix(in oklch, var(--color-signal-blue) 14%, transparent);
+  /** スクロール済み塗り・グロー: 同じテーマブルーを半透明で */
+  --site-edge-fill: color-mix(in oklch, var(--color-signal-blue) 44%, transparent);
+  --site-edge-fill-glow: color-mix(in oklch, var(--color-signal-blue) 28%, transparent);
   /** 0〜1。スクロール進捗に合わせて JS が更新 */
   --scroll-progress: 0;
 }
@@ -71,7 +71,7 @@ body {
 
 /**
  * 左端: うすいレール（::after 常時フル高）＋ スクロールに応じて伸びる塗り（::before）
- * 塗りは低彩度・半透明のブルー。z-59/60 でヘッダー(50)より前、pointer-events なし。
+ * 色は @theme の Signal Blue を color-mix で薄めたもの。z-59/60、pointer-events なし。
  */
 body::after {
   content: '';
