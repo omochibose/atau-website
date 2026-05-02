@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseButton from '../../components/BaseButton.astro';
+import LayoutContainer from '../../components/LayoutContainer.astro';
+---
+
+<BaseLayout title="送信完了" description="お問い合わせを受け付けました。">
+  <section class="pt-40 pb-24">
+    <LayoutContainer>
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-4">Contact</p>
+        <h1
+          class="font-display font-bold text-cream mb-6"
+          style="font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; line-height: 1.1;"
+        >
+          送信しました
+        </h1>
+        <p class="font-body text-dust text-lg leading-relaxed mb-10">
+          内容を確認のうえ、2営業日以内にご返信いたします。<br />
+          自動返信メールは送信しておりませんのでご了承ください。
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <BaseButton href="/" variant="primary" size="sm">トップへ</BaseButton>
+          <BaseButton href="/contact" variant="secondary" size="sm">お問い合わせへ戻る</BaseButton>
+        </div>
+      </div>
+    </LayoutContainer>
+  </section>
+</BaseLayout>

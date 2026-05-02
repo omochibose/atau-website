@@ -27,8 +27,19 @@ import LayoutContainer from '../components/LayoutContainer.astro';
   <section class="border-t py-16" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <div class="max-w-2xl">
-        <!-- Netlify Forms: the `netlify` attribute enables form detection at build time -->
-        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="flex flex-col gap-6">
+        <!--
+          Netlify Forms: data-netlify で検出。
+          action は実在するパスへ（未設定の POST は URL によって 404 になりやすい）。
+          form-name の value は form の name と完全一致させる（大文字小文字がずれると 404 になることがある）。
+        -->
+        <form
+          name="contact"
+          method="POST"
+          action="/contact/thanks/"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="flex flex-col gap-6"
+        >
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden" aria-hidden="true">
             <label>Don't fill this out: <input name="bot-field" /></label>
@@ -95,7 +106,7 @@ import LayoutContainer from '../components/LayoutContainer.astro';
 
           <div class="flex items-center justify-between pt-2">
             <p class="font-mono text-xs text-ash">* 必須項目</p>
-            <BaseButton type="submit" variant="primary" size="md">
+            <BaseButton type="submit" variant="primary" size="sm">
               Send Message
             </BaseButton>
           </div>
