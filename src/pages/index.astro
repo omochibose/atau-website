@@ -59,13 +59,13 @@ const posts = (await getCollection('blog'))
   <!-- Three Pillars -->
   <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
-      <div class="mb-12">
+      <div class="mb-10">
         <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Business</p>
         <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
           事業の三本柱
         </h2>
       </div>
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-3 gap-4">
         <PillarCard
           number="01"
           title="Inspire"
@@ -96,7 +96,7 @@ const posts = (await getCollection('blog'))
   <!-- Values -->
   <section class="border-t py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
-      <div class="mb-12">
+      <div class="mb-10">
         <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Values</p>
         <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
           私たちの価値観
@@ -127,7 +127,7 @@ const posts = (await getCollection('blog'))
   {posts.length > 0 && (
     <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
       <LayoutContainer>
-        <div class="flex justify-between items-end mb-12">
+        <div class="flex justify-between items-end mb-10">
           <div>
             <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Latest</p>
             <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">Blog</h2>
@@ -136,7 +136,7 @@ const posts = (await getCollection('blog'))
             All Posts →
           </a>
         </div>
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-3 gap-4">
           {posts.map(post => (
             <a
               href={`/blog/${post.slug}`}

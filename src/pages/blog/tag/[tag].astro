@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LayoutContainer from '../../../components/LayoutContainer.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { collectUniqueTags, tagPageHref, tagToPathSegment } from '../../../lib/blog-tags';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter(p => !p.data.draft);
+  const tags = collectUniqueTags(posts);
+
+  return tags.map((tag) => ({
+    params: { tag: tagToPathSegment(tag) },
+    props: {
+      tag,
+      posts: posts
+        .filter((p) => p.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { tag, posts } = Astro.props;
+const title = `「${tag}」の記事`;
+const description = `タグ「${tag}」で分類されたブログ記事一覧です。`;
+---
+
+<BaseLayout {title} {description}>
+  <section class="pt-40 pb-16">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">
+        <a href="/blog" class="text-dust transition-colors hover:text-signal-blue">Blog</a>
+        <span class="text-ember"> / </span>
+        <span class="text-cream">Tag</span>
+      </p>
+      <h1
+        class="font-display font-bold text-cream mb-2"
+        style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.02em; line-height: 1.1;"
+      >
+        {tag}
+      </h1>
+      <p class="font-body text-dust text-sm">
+        {posts.length} 件の記事
+      </p>
+    </LayoutContainer>
+  </section>
+
+  <section class="border-t pb-24" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="pt-12">
+      {posts.length === 0 ? (
+        <p class="font-body text-dust py-16 text-center">このタグの記事はありません。</p>
+      ) : (
+        <div>
+          {posts.map((post) => (
+            <article
+              class="flex flex-col sm:flex-row gap-6 py-8 border-b"
+              style="border-color: var(--border-subtle);"
+            >
+              <p class="font-mono text-xs text-ash shrink-0 sm:w-32 pt-1 tabular-nums">
+                {post.data.pubDate.toLocaleDateString('ja-JP')}
+              </p>
+              <div class="flex-1">
+                <h2
+                  class="font-display font-semibold text-2xl mb-2"
+                  style="letter-spacing: -0.01em;"
+                >
+                  <a
+                    href={`/blog/${post.slug}`}
+                    class="text-cream transition-colors hover:text-signal-blue"
+                  >
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="font-body text-dust text-sm leading-relaxed mb-4">
+                  {post.data.description}
+                </p>
+                {post.data.tags && post.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2">
+                    {post.data.tags.map((t) => (
+                      <a
+                        href={tagPageHref(t)}
+                        class:list={[
+                          'font-mono text-xs uppercase tracking-widest px-2 py-1 border transition-colors',
+                          t === tag
+                            ? 'border-signal-blue text-signal-blue'
+                            : 'text-ash hover:border-signal-blue hover:text-signal-blue',
+                        ]}
+                        style={
+                          t === tag
+                            ? 'border-radius: var(--radius-sm);'
+                            : 'border-radius: var(--radius-sm); border-color: var(--border-subtle);'
+                        }
+                      >
+                        {t}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </LayoutContainer>
+  </section>
+</BaseLayout>

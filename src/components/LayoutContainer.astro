@@ -1,6 +1,6 @@
 ---
 /**
- * サイト全体の水平リズム。ヘッダー・フッター・各セクションで同一の max-width / padding。
+ * サイト全体の水平リズム。max-width は --page-max、左右余白はブレークポイントで増やす。
  */
 interface Props {
   class?: string;
@@ -9,6 +9,11 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class:list={['mx-auto w-full max-w-[var(--page-max)] px-6', className]}>
+<div
+  class:list={[
+    'mx-auto w-full max-w-[var(--page-max)] px-6 sm:px-8 md:px-14 lg:px-20 xl:px-24',
+    className,
+  ]}
+>
   <slot />
 </div>

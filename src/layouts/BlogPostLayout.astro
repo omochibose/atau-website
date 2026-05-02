@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
+import { tagPageHref } from '../lib/blog-tags';
 
 interface Props {
   title: string;
@@ -30,12 +31,13 @@ const { title, description, pubDate, tags = [] } = Astro.props;
         {tags.length > 0 && (
           <div class="flex flex-wrap gap-2 mt-6">
             {tags.map(tag => (
-              <span
-                class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border"
+              <a
+                href={tagPageHref(tag)}
+                class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border transition-colors hover:border-signal-blue hover:text-signal-blue"
                 style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
               >
                 {tag}
-              </span>
+              </a>
             ))}
           </div>
         )}

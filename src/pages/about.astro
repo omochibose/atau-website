@@ -68,11 +68,11 @@ import LayoutContainer from '../components/LayoutContainer.astro';
         >
           <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 02</p>
           <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">
-            パンクたれ
+            パンクたれ！
           </h3>
           <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Stay Punk</p>
           <p class="font-body text-dust leading-relaxed">
-            挑戦とは常に現状打破である。先人の功績をただ享受するのではなく、次の世代に何かを手渡せるよう、自らの意志で一歩を踏み出す姿勢を持ち続ける。
+            挑戦とは常に現状打破である。先人の功績をただ享受するのではなく、次の世代に何かを手渡せるよう、自らの意志で一歩を踏み出す姿勢（Do It Yourself）を持ち続ける。
           </p>
         </div>
       </div>
@@ -88,10 +88,12 @@ import LayoutContainer from '../components/LayoutContainer.astro';
       </h2>
       <dl>
         {[
-          { label: '社名',       value: 'ATAU' },
-          { label: '設立',       value: '2026年' },
+          { label: '社名',       value: 'ATAU Digital Design 合同会社' },
+          { label: '設立年月日',       value: '2024年7月3日' },
+          { label: '資本金',       value: '100万円' },
           { label: 'ミッション', value: '挑戦しやすい社会を創る' },
-          { label: 'ウェブサイト', value: 'atau.co.jp' },
+          { label: '所在地', value: '東京都東村山市秋津町4-23-58' },
+          { label: '代表者社員', value: '井上景太' },
         ].map(({ label, value }) => (
           <div
             class="flex flex-col sm:flex-row gap-4 py-5 border-b"

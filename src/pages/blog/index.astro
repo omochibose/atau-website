@@ -2,10 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LayoutContainer from '../../components/LayoutContainer.astro';
 import { getCollection } from 'astro:content';
+import { collectUniqueTags, tagPageHref } from '../../lib/blog-tags';
 
 const posts = (await getCollection('blog'))
   .filter(p => !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allTags = collectUniqueTags(posts);
 ---
 
 <BaseLayout title="Blog" description="ATAUブログ — 挑戦の記録">
@@ -20,6 +23,20 @@ const posts = (await getCollection('blog'))
       >
         Blog
       </h1>
+      {allTags.length > 0 && (
+        <div class="mt-10 flex flex-wrap gap-2">
+          <span class="font-mono text-xs text-ash uppercase tracking-widest self-center mr-1">Tags</span>
+          {allTags.map((tag) => (
+            <a
+              href={tagPageHref(tag)}
+              class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border transition-colors hover:border-signal-blue hover:text-signal-blue"
+              style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
     </LayoutContainer>
   </section>
 
@@ -31,9 +48,8 @@ const posts = (await getCollection('blog'))
       ) : (
         <div>
           {posts.map(post => (
-            <a
-              href={`/blog/${post.slug}`}
-              class="flex flex-col sm:flex-row gap-6 py-8 border-b group"
+            <article
+              class="flex flex-col sm:flex-row gap-6 py-8 border-b"
               style="border-color: var(--border-subtle);"
             >
               <p class="font-mono text-xs text-ash shrink-0 sm:w-32 pt-1 tabular-nums">
@@ -41,10 +57,15 @@ const posts = (await getCollection('blog'))
               </p>
               <div class="flex-1">
                 <h2
-                  class="font-display font-semibold text-2xl text-cream group-hover:text-signal-blue transition-colors mb-2"
+                  class="font-display font-semibold text-2xl mb-2"
                   style="letter-spacing: -0.01em;"
                 >
-                  {post.data.title}
+                  <a
+                    href={`/blog/${post.slug}`}
+                    class="text-cream transition-colors hover:text-signal-blue"
+                  >
+                    {post.data.title}
+                  </a>
                 </h2>
                 <p class="font-body text-dust text-sm leading-relaxed mb-4">
                   {post.data.description}
@@ -52,17 +73,18 @@ const posts = (await getCollection('blog'))
                 {post.data.tags && post.data.tags.length > 0 && (
                   <div class="flex flex-wrap gap-2">
                     {post.data.tags.map(tag => (
-                      <span
-                        class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border"
+                      <a
+                        href={tagPageHref(tag)}
+                        class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border transition-colors hover:border-signal-blue hover:text-signal-blue"
                         style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
                       >
                         {tag}
-                      </span>
+                      </a>
                     ))}
                   </div>
                 )}
               </div>
-            </a>
+            </article>
           ))}
         </div>
       )}
