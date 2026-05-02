@@ -1,0 +1,51 @@
+# Decap CMS — https://decapcms.org/  管理画面: /admin/
+#
+# 本番（Netlify）: backend の GitHub + base_url/auth_endpoint を使うには、
+#   Netlify → Site configuration → Access & security → OAuth → GitHub を有効化し、
+#   このサイトと同じ GitHub リポジトリに接続する。
+#
+# ローカル: backend ブロックの直後に `local_backend: true` を一時追加し、
+#   別ターミナルで `npm run cms:local`（decap-server）を起動。`astro dev` で /admin を開く。
+#   作業後は `local_backend` を削除してからコミットすること。
+
+backend:
+  name: github
+  repo: omochibose/atau-website
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+site_url: https://atau-dd.com
+logo_url: https://atau-dd.com/favicon.svg
+publish_mode: simple
+
+media_folder: public/uploads
+public_folder: /uploads
+
+locale: ja
+
+collections:
+  - name: blog
+    label: ブログ
+    label_singular: 記事
+    folder: src/content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: タイトル, name: title, widget: string }
+      - { label: 説明（一覧・OG 用）, name: description, widget: text }
+      - label: 公開日
+        name: pubDate
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        picker_utc: false
+      - label: タグ
+        name: tags
+        widget: list
+        required: false
+        default: []
+      - { label: 下書き, name: draft, widget: boolean, default: false }
+      - { label: 本文, name: body, widget: markdown }
