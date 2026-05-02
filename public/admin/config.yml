@@ -1,8 +1,19 @@
 # Decap CMS — https://decapcms.org/  管理画面: /admin/
 #
-# 本番（Netlify）: backend の GitHub + base_url/auth_endpoint を使うには、
-#   Netlify → Site configuration → Access & security → OAuth → GitHub を有効化し、
-#   このサイトと同じ GitHub リポジトリに接続する。
+# 本番（Netlify）で「Git でログイン」が 404 になる主な理由:
+#   1) Netlify に GitHub OAuth が未設定（下記「OAuth 手順」）
+#   2) 下記 site_domain と、Netlify の「サイトの URL」が一致していない
+#      （例: Site URL が *.netlify.app のままなのに /admin は atau-dd.com で開いている）
+#
+# OAuth 手順（概要）:
+#   GitHub → Settings → Developer settings → OAuth Apps で新規アプリを作成し、
+#   Authorization callback URL に Netlify 公式の値を入れる（最新は次を参照）:
+#   https://docs.netlify.com/security/oauth-provider/oauth-registration/
+#   その Client ID / Secret を Netlify → Site configuration → Security → OAuth
+#   → Authentication providers → GitHub に登録する。
+#
+# site_domain は api.netlify.com への auth リクエストの site_id に使われる。
+# うまくいかない場合は Netlify のデフォルトドメイン（*.netlify.app のホスト名）に変えて試す。
 #
 # ローカル: backend ブロックの直後に `local_backend: true` を一時追加し、
 #   別ターミナルで `npm run cms:local`（decap-server）を起動。`astro dev` で /admin を開く。
@@ -12,10 +23,13 @@ backend:
   name: github
   repo: omochibose/atau-website
   branch: main
+  # Netlify がこのサイトとして認識するホスト名（Site details の URL と揃える）
+  site_domain: atau-dd.com
   base_url: https://api.netlify.com
   auth_endpoint: auth
 
 site_url: https://atau-dd.com
+display_url: https://atau-dd.com
 logo_url: https://atau-dd.com/favicon.svg
 publish_mode: simple
 
