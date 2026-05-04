@@ -40,6 +40,8 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    # 「ライブで見る」等: site_url と組み合わせて iframe の URL に使う（未設定だと / だけになる）
+    preview_path: blog/{{slug}}
     fields:
       - { label: タイトル, name: title, widget: string }
       - { label: 説明（一覧・OG 用）, name: description, widget: text }
