@@ -4,11 +4,11 @@
   /* Layout — ヘッダー・本文・フッターで共通のコンテンツ幅 */
   --page-max: 80rem;
 
-  /* Backgrounds */
+  /* Backgrounds — void より一段ずつ明るくし、黒〜グレーの差をはっきりさせる */
   --color-void: #0A0905;
-  --color-depth: #111009;
-  --color-surface: #1A1810;
-  --color-elevated: #252218;
+  --color-depth: #18150d;
+  --color-surface: #262118;
+  --color-elevated: #353020;
 
   /* Foreground */
   --color-cream: #F0EBE0;
@@ -56,7 +56,7 @@
 }
 
 html {
-  background-color: #0A0905;
+  background-color: var(--color-void);
   color: #F0EBE0;
   font-family: 'Noto Sans JP', sans-serif;
   scroll-behavior: smooth;

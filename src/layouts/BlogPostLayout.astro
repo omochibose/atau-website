@@ -98,12 +98,12 @@ const { title, description, pubDate, tags = [] } = Astro.props;
     font-family: 'Space Mono', monospace;
     font-size: 0.875rem;
     color: oklch(0.78 0.16 195);
-    background-color: #1A1810;
+    background-color: var(--color-surface);
     padding: 0.125rem 0.375rem;
     border-radius: 2px;
   }
   .prose-atau :global(pre) {
-    background-color: #1A1810;
+    background-color: var(--color-surface);
     padding: 1.5rem;
     border-radius: 4px;
     overflow-x: auto;

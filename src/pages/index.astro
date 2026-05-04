@@ -13,8 +13,8 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Home" description="ATAUは挑戦しやすい社会を創ることをミッションとする会社です。">
 
-  <!-- Hero -->
-  <section class="bg-grid-6 min-h-screen flex flex-col justify-center pt-24 pb-16">
+  <!-- Hero（グレー） -->
+  <section class="bg-grid-6 bg-depth min-h-screen flex flex-col justify-center pt-24 pb-16">
     <LayoutContainer class="relative z-10">
         <div class="min-w-0">
             <p class="text-center font-display font-bold text-xs uppercase tracking-widest text-cream mb-4" style="font-size: clamp(1.5rem, 8vw, 2rem);">Inspire Ambition</p>
@@ -56,8 +56,8 @@ const posts = (await getCollection('blog'))
     </LayoutContainer>
   </section>
 
-  <!-- Three Pillars -->
-  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+  <!-- Three Pillars（黒） -->
+  <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <div class="mb-10">
         <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Business</p>
@@ -93,8 +93,8 @@ const posts = (await getCollection('blog'))
     </LayoutContainer>
   </section>
 
-  <!-- Values -->
-  <section class="border-t py-24" style="border-color: var(--border-subtle);">
+  <!-- Values（グレー） -->
+  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <div class="mb-10">
         <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Values</p>
@@ -125,7 +125,7 @@ const posts = (await getCollection('blog'))
 
   <!-- Latest Blog Posts -->
   {posts.length > 0 && (
-    <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+    <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
       <LayoutContainer>
         <div class="flex justify-between items-end mb-10">
           <div>
@@ -162,8 +162,16 @@ const posts = (await getCollection('blog'))
     </section>
   )}
 
-  <!-- CTA -->
-  <section class="bg-grid-6 border-t py-32" style="border-color: var(--border-subtle);">
+  <!-- CTA（ブログあり→グレーで締め / なし→黒で締め＝常に交互） -->
+  <section
+    class:list={[
+      'bg-grid-6',
+      'border-t',
+      'py-32',
+      posts.length > 0 ? 'bg-depth' : 'bg-void',
+    ]}
+    style="border-color: var(--border-subtle);"
+  >
     <LayoutContainer class="text-center relative z-10">
       <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-6">Get in Touch</p>
       <h2
