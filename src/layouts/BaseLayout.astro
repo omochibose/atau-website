@@ -31,21 +31,14 @@ const { title, description = 'ATAU — 挑戦しやすい社会を創る' } = As
     </main>
     <Footer />
     <!--
-      Netlify Identity: 招待・確認メールのリンクは Site URL（多くは /）に #invite_token 等で着地する。
-      ウィジェットが無いページではトークンが処理されないため、全ページで読み込む。
-      登録完了後は Decap 用に /admin/ へ誘導する。
+      Netlify Identity: 招待・確認メールは多く / に #invite_token 等で着地するためウィジェットを全ページで読み込む。
+      login / signup で常に /admin へ飛ばさない（セッション復元でも login が走り、プレビュー iframe や通常閲覧が壊れるため）。
+      招待完了後の CMS へはブラウザで /admin/ を開いてもらう。
     -->
     <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script is:inline>
       (function () {
         if (!window.netlifyIdentity) return;
-        function goAdminIfNeeded() {
-          if (window.location.pathname.indexOf('/admin') !== 0) {
-            window.location.href = '/admin/';
-          }
-        }
-        window.netlifyIdentity.on('login', goAdminIfNeeded);
-        window.netlifyIdentity.on('signup', goAdminIfNeeded);
         window.netlifyIdentity.on('init', function (user) {
           if (user) return;
           var h = window.location.hash || '';

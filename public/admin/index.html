@@ -7,19 +7,8 @@
     <title>ATAU — Content Manager</title>
   </head>
   <body>
-    <!-- Netlify Identity（git-gateway 認証に必須。編集者は招待メールで登録） -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', function (user) {
-          if (!user) {
-            window.netlifyIdentity.on('login', function () {
-              document.location.href = '/admin/';
-            });
-          }
-        });
-      }
-    </script>
+    <!-- Netlify Identity（git-gateway 用）。ログイン後の /admin 強制リダイレクトは付けない（Decap プレビューと競合する） -->
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://unpkg.com/decap-cms@3/dist/decap-cms.js"></script>
   </body>
 </html>
