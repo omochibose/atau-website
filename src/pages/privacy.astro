@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+---
+
+<BaseLayout title="Privacy Policy" description="個人情報保護方針・アクセス解析に関する情報">
+  <section class="pt-40 pb-16">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Legal</p>
+      <h1
+        class="font-display font-bold text-cream"
+        style="font-size: clamp(2.5rem, 8vw, 4rem); letter-spacing: -0.03em; line-height: 1.0;"
+      >
+        Privacy Policy
+      </h1>
+      <p class="font-body text-dust text-sm mt-6">最終更新日: 2026年5月9日</p>
+    </LayoutContainer>
+  </section>
+
+  <section class="border-t py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="max-w-3xl">
+      <div class="space-y-10">
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            1. 基本方針
+          </h2>
+          <p class="font-body text-dust leading-relaxed">
+            ATAU Digital Design 合同会社（以下「当社」）は、個人情報の保護に関する法令その他の規範を遵守し、
+            お客様の個人情報を適切に取り扱います。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            2. 取得する情報
+          </h2>
+          <p class="font-body text-dust leading-relaxed">
+            当社は、お問い合わせフォームの利用時に、お名前、メールアドレス、お問い合わせ内容等の情報を取得します。
+            また、サイトの利用状況を把握するために、Cookie 等を通じてアクセス情報を取得する場合があります。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            3. 利用目的
+          </h2>
+          <ul class="list-disc pl-6 space-y-2 font-body text-dust leading-relaxed">
+            <li>お問い合わせへの対応および関連するご連絡のため</li>
+            <li>当社サービスの品質向上、改善、新規企画検討のため</li>
+            <li>不正行為の防止およびセキュリティ確保のため</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            4. Google Analytics の利用
+          </h2>
+          <p class="font-body text-dust leading-relaxed mb-3">
+            当社サイトでは、アクセス解析のために Google LLC が提供する Google Analytics を使用しています。
+            Google Analytics は Cookie を利用して、トラフィックデータを収集します。
+          </p>
+          <p class="font-body text-dust leading-relaxed mb-3">
+            収集されるデータは匿名であり、特定の個人を直接識別するものではありません。収集された情報は、
+            Google のプライバシーポリシーおよび利用規約に基づいて管理されます。
+          </p>
+          <p class="font-body text-dust leading-relaxed">
+            Google Analytics の詳細は
+            <a
+              href="https://marketingplatform.google.com/about/analytics/terms/jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-signal-blue underline decoration-white/20 underline-offset-[3px] hover:opacity-80"
+            >
+              Google Analytics 利用規約
+            </a>
+            および
+            <a
+              href="https://policies.google.com/privacy?hl=ja"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-signal-blue underline decoration-white/20 underline-offset-[3px] hover:opacity-80"
+            >
+              Google プライバシーポリシー
+            </a>
+            をご確認ください。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            5. Google シグナルの利用
+          </h2>
+          <p class="font-body text-dust leading-relaxed mb-3">
+            当社は Google Analytics の機能である Google シグナルを有効化しています。これにより、Google が保有する
+            ユーザーデータ（年齢層・性別・興味関心などの推計情報、クロスデバイス情報）を用いた集計レポートを参照する場合があります。
+          </p>
+          <p class="font-body text-dust leading-relaxed">
+            これらの情報は統計的に処理され、個人を特定する目的で利用するものではありません。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            6. Cookie の無効化（オプトアウト）
+          </h2>
+          <p class="font-body text-dust leading-relaxed mb-3">
+            お客様はブラウザ設定により Cookie を無効化できます。また、Google が提供するオプトアウトアドオンを利用することで
+            Google Analytics によるデータ収集を無効化できます。
+          </p>
+          <p class="font-body text-dust leading-relaxed">
+            オプトアウトアドオン:
+            <a
+              href="https://tools.google.com/dlpage/gaoptout?hl=ja"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-signal-blue underline decoration-white/20 underline-offset-[3px] hover:opacity-80"
+            >
+              https://tools.google.com/dlpage/gaoptout?hl=ja
+            </a>
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            7. 個人情報の第三者提供
+          </h2>
+          <p class="font-body text-dust leading-relaxed">
+            当社は、法令に基づく場合を除き、あらかじめ本人の同意を得ることなく個人情報を第三者に提供しません。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display font-semibold text-2xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            8. お問い合わせ窓口
+          </h2>
+          <p class="font-body text-dust leading-relaxed">
+            本ポリシーに関するお問い合わせは、<a href="/contact" class="text-signal-blue underline decoration-white/20 underline-offset-[3px] hover:opacity-80">お問い合わせページ</a>
+            よりご連絡ください。
+          </p>
+        </section>
+      </div>
+    </LayoutContainer>
+  </section>
+</BaseLayout>
