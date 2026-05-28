@@ -1,0 +1,90 @@
+---
+import type { TocHeading } from '../lib/blog-toc';
+
+interface Props {
+  headings: TocHeading[];
+  class?: string;
+}
+
+const { headings, class: className = '' } = Astro.props;
+
+if (headings.length === 0) {
+  return null;
+}
+---
+
+<nav aria-label="目次" class:list={['blog-toc', className]}>
+  <p class="blog-toc__label">目次</p>
+  <ul class="blog-toc__list">
+    {
+      headings.map((heading) => (
+        <li
+          class:list={[
+            'blog-toc__item',
+            heading.depth === 3 && 'blog-toc__item--sub',
+          ]}
+        >
+          <a href={`#${heading.slug}`} class="blog-toc__link">
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .blog-toc {
+    background-color: #f3ede5;
+    border: 1px solid var(--pg-border, #ddd5ca);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .blog-toc__label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pg-meta, #716557);
+    margin: 0 0 0.75rem;
+  }
+
+  .blog-toc__list {
+    list-style: disc;
+    margin: 0;
+    padding-left: 1.25em;
+  }
+
+  .blog-toc__item {
+    margin: 0.34em 0;
+  }
+
+  .blog-toc__item::marker {
+    color: rgba(188, 106, 58, 0.82);
+  }
+
+  .blog-toc__item--sub {
+    list-style-type: circle;
+    margin-left: 0.875rem;
+  }
+
+  .blog-toc__link {
+    display: block;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--pg-text-secondary, #61574f);
+    text-decoration: none;
+    border-bottom: none;
+    padding: 0.2rem 0;
+    transition: color 0.2s ease;
+  }
+
+  .blog-toc__link:hover {
+    color: var(--pg-link, #8f4b28);
+  }
+</style>

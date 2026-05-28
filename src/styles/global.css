@@ -4,22 +4,22 @@
   /* Layout — ヘッダー・本文・フッターで共通のコンテンツ幅 */
   --page-max: 80rem;
 
-  /* Backgrounds — void より一段ずつ明るくし、黒〜グレーの差をはっきりさせる */
-  --color-void: #0A0905;
-  --color-depth: #18150d;
-  --color-surface: #262118;
-  --color-elevated: #353020;
+  /* Backgrounds — 温かみのあるライトトーン */
+  --color-void: #FAF8F5;
+  --color-depth: #F0EBE6;
+  --color-surface: #FFFFFF;
+  --color-elevated: #FFFFFF;
 
   /* Foreground */
-  --color-cream: #F0EBE0;
-  --color-dust: #B8B2A6;
-  --color-ash: #6B6660;
-  --color-ember: #3D3930;
+  --color-cream: #1A1814;
+  --color-dust: #5C5852;
+  --color-ash: #8A857C;
+  --color-ember: #A8A29A;
 
-  /* Accents */
-  --color-signal-blue: oklch(0.72 0.18 220);
-  --color-signal-cyan: oklch(0.78 0.16 195);
-  --color-signal-gold: oklch(0.80 0.14 75);
+  /* Accents — ライト背景でも視認性を確保 */
+  --color-signal-blue: oklch(0.52 0.18 220);
+  --color-signal-cyan: oklch(0.55 0.16 195);
+  --color-signal-gold: oklch(0.62 0.14 75);
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -31,20 +31,23 @@
   --radius-md: 4px;
   --radius-lg: 8px;
   --radius-full: 9999px;
+
+  /* デフォルトのボーダー幅（border ユーティリティ全般） */
+  --default-border-width: 1.5px;
 }
 
 :root {
-  --border-subtle: rgba(240, 235, 224, 0.08);
-  --border-medium: rgba(240, 235, 224, 0.15);
-  --border-strong: rgba(240, 235, 224, 0.30);
+  --border-subtle: rgba(26, 24, 20, 0.16);
+  --border-medium: rgba(26, 24, 20, 0.26);
+  --border-strong: rgba(26, 24, 20, 0.42);
 
   /** ビューポート左端のスクロールインジケーター（色相は --color-signal-blue と同一） */
-  --site-edge-line-width: 2px;
-  /** 未読レール: Signal Blue を極薄に */
-  --site-edge-rail: color-mix(in oklch, var(--color-signal-blue) 14%, transparent);
+  --site-edge-line-width: 3px;
+  /** 未読レール: Signal Blue を薄く表示 */
+  --site-edge-rail: color-mix(in oklch, var(--color-signal-blue) 28%, transparent);
   /** スクロール済み塗り・グロー: 同じテーマブルーを半透明で */
-  --site-edge-fill: color-mix(in oklch, var(--color-signal-blue) 44%, transparent);
-  --site-edge-fill-glow: color-mix(in oklch, var(--color-signal-blue) 28%, transparent);
+  --site-edge-fill: color-mix(in oklch, var(--color-signal-blue) 72%, transparent);
+  --site-edge-fill-glow: color-mix(in oklch, var(--color-signal-blue) 48%, transparent);
   /** 0〜1。スクロール進捗に合わせて JS が更新 */
   --scroll-progress: 0;
 }
@@ -56,8 +59,9 @@
 }
 
 html {
+  color-scheme: light;
   background-color: var(--color-void);
-  color: #F0EBE0;
+  color: var(--color-cream);
   font-family: 'Noto Sans JP', sans-serif;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -67,6 +71,12 @@ html {
 body {
   min-height: 100vh;
   font-variant-numeric: tabular-nums;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-ash);
+  opacity: 1;
 }
 
 /**
@@ -124,8 +134,8 @@ main {
     to right,
     transparent 0,
     transparent calc(100% / 6 - 1px),
-    rgba(240, 235, 224, 0.055) calc(100% / 6 - 1px),
-    rgba(240, 235, 224, 0.055) calc(100% / 6)
+    rgba(26, 24, 20, 0.1) calc(100% / 6 - 1px),
+    rgba(26, 24, 20, 0.1) calc(100% / 6)
   );
 }
 

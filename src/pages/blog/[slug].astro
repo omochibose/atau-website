@@ -1,6 +1,7 @@
 ---
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { getCollection } from 'astro:content';
+import { getTocHeadings } from '../../lib/blog-toc';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -11,7 +12,8 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+const tocHeadings = getTocHeadings(headings);
 ---
 
 <BlogPostLayout
@@ -19,6 +21,7 @@ const { Content } = await post.render();
   description={post.data.description}
   pubDate={post.data.pubDate}
   tags={post.data.tags}
+  tocHeadings={tocHeadings}
 >
   <Content />
 </BlogPostLayout>

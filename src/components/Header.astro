@@ -15,7 +15,7 @@ const currentPath = Astro.url.pathname;
 
 <header
   class="fixed top-0 left-0 right-0 z-50 border-b"
-  style="border-color: var(--border-subtle); background-color: rgba(10, 9, 5, 0.92); backdrop-filter: blur(12px);"
+  style="border-color: var(--border-subtle); background-color: color-mix(in srgb, var(--color-void) 92%, transparent); backdrop-filter: blur(12px);"
 >
   {/*
     peer / peer-checked は同一親の後続兄弟にしか効かない。
@@ -77,7 +77,7 @@ const currentPath = Astro.url.pathname;
   <div
     id="site-mobile-nav"
     class="hidden peer-checked:block md:hidden border-t"
-    style="border-color: var(--border-subtle); background-color: rgba(10, 9, 5, 0.97);"
+    style="border-color: var(--border-subtle); background-color: color-mix(in srgb, var(--color-void) 97%, transparent);"
   >
     <LayoutContainer class="py-4">
       <nav class="flex flex-col gap-1" aria-label="Mobile navigation">

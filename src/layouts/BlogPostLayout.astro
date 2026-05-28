@@ -1,29 +1,32 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
+import BlogTableOfContents from '../components/BlogTableOfContents.astro';
 import { tagPageHref } from '../lib/blog-tags';
+import type { TocHeading } from '../lib/blog-toc';
 
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
   tags?: string[];
+  tocHeadings?: TocHeading[];
 }
 
-const { title, description, pubDate, tags = [] } = Astro.props;
+const { title, description, pubDate, tags = [], tocHeadings = [] } = Astro.props;
+const hasToc = tocHeadings.length > 0;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="pt-32 pb-24">
+  <article class="blog-post pt-32 pb-24">
     <LayoutContainer>
-      <div class="max-w-3xl">
+      <div class:list={['blog-article-shell', hasToc && 'blog-article-shell--with-toc']}>
         <header class="mb-12 pb-8 border-b" style="border-color: var(--border-subtle);">
         <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">
           {pubDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
         <h1
-          class="font-display font-bold text-5xl text-cream mb-4"
-          style="letter-spacing: -0.03em; line-height: 1.05;"
+          class="font-display font-bold text-5xl text-cream mb-4 leading-14"
         >
           {title}
         </h1>
@@ -43,17 +46,27 @@ const { title, description, pubDate, tags = [] } = Astro.props;
         )}
       </header>
 
-      <div class="prose-atau">
-        <slot />
-      </div>
+      <div class="blog-layout">
+        <div class="blog-main">
+          <div class="blog-prose-card">
+            <div class="prose-atau">
+              <slot />
+            </div>
+          </div>
 
-      <div class="mt-16 pt-8 border-t" style="border-color: var(--border-subtle);">
-        <a
-          href="/blog"
-          class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity"
-        >
-          ← Back to Blog
-        </a>
+          <div class="mt-16 pt-8 border-t" style="border-color: var(--border-subtle);">
+            <a
+              href="/blog"
+              class="blog-back-link font-mono text-xs uppercase tracking-widest"
+            >
+              ← Back to Blog
+            </a>
+          </div>
+        </div>
+
+        {hasToc && (
+          <BlogTableOfContents headings={tocHeadings} class="blog-toc-panel" />
+        )}
       </div>
     </div>
     </LayoutContainer>
@@ -61,78 +74,306 @@ const { title, description, pubDate, tags = [] } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* Paperglow-inspired editorial tokens (Typora theme reference) */
+  .blog-post {
+    --pg-heading: #1e1915;
+    --pg-text-secondary: #61574f;
+    --pg-meta: #716557;
+    --pg-primary: #bc6a3a;
+    --pg-link: #8f4b28;
+    --pg-border: #ddd5ca;
+  }
+
+  .blog-post :global(header .text-ash) {
+    color: var(--pg-meta);
+  }
+
+  .blog-post :global(header h1) {
+    color: var(--pg-heading);
+  }
+
+  .blog-post :global(header .text-dust) {
+    color: var(--pg-text-secondary);
+  }
+
+  .blog-post :global(header a.border:hover) {
+    border-color: var(--pg-primary) !important;
+    color: var(--pg-primary) !important;
+  }
+
+  .blog-post .blog-back-link {
+    color: var(--pg-link);
+    text-decoration: none;
+    border-bottom: 1.5px solid rgba(143, 75, 40, 0.28);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .blog-post .blog-back-link:hover {
+    color: #743b1f;
+    border-bottom-color: #743b1f;
+  }
+
+  .blog-article-shell {
+    max-width: 48rem;
+  }
+
+  .blog-article-shell--with-toc {
+    max-width: none;
+  }
+
+  .blog-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* スマホ: 目次を本文の上に */
+  .blog-article-shell--with-toc .blog-layout :global(.blog-toc-panel) {
+    order: -1;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-article-shell--with-toc .blog-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 14rem;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .blog-main {
+      grid-column: 1;
+      grid-row: 1;
+      min-width: 0;
+    }
+
+    .blog-article-shell--with-toc .blog-layout :global(.blog-toc-panel) {
+      grid-column: 2;
+      grid-row: 1;
+      order: unset;
+      position: sticky;
+      top: 5.5rem;
+      align-self: start;
+    }
+  }
+
+  .blog-prose-card {
+    --pg-text: #2b2621;
+    --pg-heading: #1e1915;
+    --pg-text-secondary: #61574f;
+    --pg-meta: #716557;
+    --pg-primary: #bc6a3a;
+    --pg-primary-rgb: 188, 106, 58;
+    --pg-link: #8f4b28;
+    --pg-link-hover: #743b1f;
+    --pg-link-border: rgba(143, 75, 40, 0.28);
+    --pg-border: #ddd5ca;
+    --pg-card-bg: #fcfaf6;
+    --pg-card-border: rgba(96, 78, 63, 0.1);
+    --pg-card-shadow:
+      0 1px 0 rgba(70, 52, 38, 0.05),
+      0 10px 22px rgba(70, 52, 38, 0.05);
+    --pg-code-bg: #f2ede7;
+    --pg-code-text: #a3493f;
+    --pg-code-border: #d8cec3;
+    --pg-pre-bg: #fcfbf8;
+    --pg-pre-border: #e7ddd2;
+    --pg-pre-text: #1c1815;
+    --pg-quote-bg: #f3ede5;
+    --pg-quote-border: #c58c64;
+    --pg-quote-text: #4a4039;
+
+    background-color: var(--pg-card-bg);
+    border: 1px solid var(--pg-card-border);
+    border-radius: 16px;
+    box-shadow: var(--pg-card-shadow);
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.5rem, 4vw, 2.75rem);
+  }
+
+  .prose-atau {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--pg-text);
+  }
+
+  .prose-atau :global(h2),
+  .prose-atau :global(h3),
+  .prose-atau :global(h4),
+  .prose-atau :global(h5),
+  .prose-atau :global(h6) {
+    scroll-margin-top: 5.5rem;
+  }
+
   .prose-atau :global(h2) {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 1.75rem;
-    color: #F0EBE0;
-    letter-spacing: -0.02em;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.6875rem;
+    color: var(--pg-heading);
+    letter-spacing: normal;
+    line-height: 1.4;
+    margin-top: 4.5rem;
+    margin-bottom: 0.5em;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--pg-border);
   }
+
   .prose-atau :global(h3) {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: 1.25rem;
-    color: #F0EBE0;
-    letter-spacing: -0.01em;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    font-weight: 500;
+    font-size: 1.4375rem;
+    color: var(--pg-heading);
+    letter-spacing: normal;
+    line-height: 1.4;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
   }
+
+  .prose-atau :global(h4),
+  .prose-atau :global(h5),
+  .prose-atau :global(h6) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    color: var(--pg-heading);
+    line-height: 1.4;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose-atau :global(h4) {
+    font-size: 1.25rem;
+  }
+
+  .prose-atau :global(h5) {
+    font-size: 1.125rem;
+  }
+
+  .prose-atau :global(h6) {
+    font-size: 1.0625rem;
+  }
+
   .prose-atau :global(p) {
     font-family: 'Noto Sans JP', sans-serif;
-    color: #B8B2A6;
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
+    font-weight: 400;
+    color: var(--pg-text);
+    line-height: 1.5;
+    margin: 0 0 1em;
   }
+
+  .prose-atau :global(p:first-child) {
+    margin-top: 0;
+  }
+
   .prose-atau :global(a) {
-    color: oklch(0.72 0.18 220);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    color: var(--pg-link);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--pg-link-border);
+    transition: color 0.2s ease, border-color 0.2s ease;
   }
+
+  .prose-atau :global(a:hover) {
+    color: var(--pg-link-hover);
+    border-bottom-color: var(--pg-link-hover);
+  }
+
   .prose-atau :global(strong) {
-    color: #F0EBE0;
-    font-weight: 600;
+    color: var(--pg-heading);
+    font-weight: 700;
   }
+
+  .prose-atau :global(em) {
+    font-style: italic;
+  }
+
   .prose-atau :global(code) {
     font-family: 'Space Mono', monospace;
-    font-size: 0.875rem;
-    color: oklch(0.78 0.16 195);
-    background-color: var(--color-surface);
-    padding: 0.125rem 0.375rem;
-    border-radius: 2px;
+    font-size: 0.85em;
+    color: var(--pg-code-text);
+    background-color: var(--pg-code-bg);
+    border: 1px solid var(--pg-code-border);
+    padding: 2px 8px;
+    border-radius: 6px;
   }
+
   .prose-atau :global(pre) {
-    background-color: var(--color-surface);
-    padding: 1.5rem;
-    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--pg-pre-text);
+    background-color: var(--pg-pre-bg);
+    border: 1px solid var(--pg-pre-border);
+    border-radius: 16px;
+    padding: 16px 20px;
     overflow-x: auto;
-    margin-bottom: 1.25rem;
-    border: 1px solid rgba(240, 235, 224, 0.08);
+    margin: 1em 0;
   }
+
   .prose-atau :global(pre code) {
     background: none;
+    border: none;
     padding: 0;
+    border-radius: 0;
+    color: inherit;
+    font-size: inherit;
   }
+
   .prose-atau :global(blockquote) {
-    border-left: 2px solid rgba(240, 235, 224, 0.15);
-    padding-left: 1.5rem;
-    color: #6B6660;
-    margin: 2rem 0;
+    margin: 1.5em 0;
+    padding: 16px 20px;
+    border: none;
+    border-left: 3px solid var(--pg-quote-border);
+    background-color: var(--pg-quote-bg);
+    border-radius: 0 8px 8px 0;
+    color: var(--pg-quote-text);
+    font-style: normal;
   }
+
+  .prose-atau :global(blockquote p) {
+    color: var(--pg-quote-text);
+    margin: 0 0 0.6em;
+    line-height: 1.5;
+  }
+
+  .prose-atau :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose-atau :global(blockquote strong) {
+    color: var(--pg-heading);
+  }
+
   .prose-atau :global(ul),
   .prose-atau :global(ol) {
-    color: #B8B2A6;
-    padding-left: 1.5rem;
-    margin-bottom: 1.25rem;
+    color: var(--pg-text);
+    padding-left: 1.55em;
+    margin: 0.55em 0 1em;
   }
+
   .prose-atau :global(li) {
-    margin-bottom: 0.5rem;
-    line-height: 1.7;
+    margin: 0.34em 0;
+    line-height: 1.5;
     font-family: 'Noto Sans JP', sans-serif;
   }
+
+  .prose-atau :global(ul > li::marker) {
+    color: rgba(var(--pg-primary-rgb), 0.82);
+  }
+
+  .prose-atau :global(ol > li::marker) {
+    color: rgba(var(--pg-primary-rgb), 0.82);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
   .prose-atau :global(hr) {
-    border-color: rgba(240, 235, 224, 0.08);
-    margin: 3rem 0;
+    border: none;
+    border-top: 1px solid var(--pg-border);
+    margin: 2.5em 0;
+  }
+
+  .prose-atau :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1em 0;
   }
 </style>
