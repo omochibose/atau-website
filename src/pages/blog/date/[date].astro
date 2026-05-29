@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LayoutContainer from '../../../components/LayoutContainer.astro';
+import { getCollection } from 'astro:content';
+import { tagPageHref } from '../../../lib/blog-tags';
+import { toDateKey, formatActivityDateLabel } from '../../../lib/blog-activity';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
+  const dates = new Set<string>();
+
+  for (const post of posts) {
+    dates.add(toDateKey(post.data.pubDate));
+  }
+
+  return [...dates]
+    .filter((date) => {
+      const count = posts.filter((p) => toDateKey(p.data.pubDate) === date).length;
+      return count > 1;
+    })
+    .map((date) => ({
+      params: { date },
+      props: {
+        date,
+        posts: posts
+          .filter((p) => toDateKey(p.data.pubDate) === date)
+          .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+      },
+    }));
+}
+
+const { date, posts } = Astro.props;
+const dateLabel = formatActivityDateLabel(date);
+---
+
+<BaseLayout title={`${dateLabel}の記事`} description={`${dateLabel}に公開したブログ記事一覧`}>
+  <section class="pt-40 pb-24">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Journal</p>
+      <h1
+        class="font-display font-bold text-cream mb-4"
+        style="font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -0.03em; line-height: 1.1;"
+      >
+        {dateLabel}
+      </h1>
+      <p class="font-body text-dust mb-12">{posts.length}件の記事</p>
+
+      <div class="border-t pt-8" style="border-color: var(--border-subtle);">
+        {
+          posts.map((post) => (
+            <article
+              class="py-8 border-b"
+              style="border-color: var(--border-subtle);"
+            >
+              <h2
+                class="font-display font-semibold text-2xl mb-2"
+                style="letter-spacing: -0.01em;"
+              >
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="text-cream transition-colors hover:text-signal-blue"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="font-body text-dust text-sm leading-relaxed mb-4">
+                {post.data.description}
+              </p>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.map((tag) => (
+                    <a
+                      href={tagPageHref(tag)}
+                      class="font-mono text-xs text-ash uppercase tracking-widest px-2 py-1 border transition-colors hover:border-signal-blue hover:text-signal-blue"
+                      style="border-color: var(--border-subtle); border-radius: var(--radius-sm);"
+                    >
+                      {tag}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-12">
+        <a
+          href="/blog"
+          class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity"
+        >
+          ← Back to Blog
+        </a>
+      </div>
+    </LayoutContainer>
+  </section>
+</BaseLayout>

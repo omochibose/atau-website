@@ -1,0 +1,138 @@
+---
+import BlogActivityGrid from './BlogActivityGrid.astro';
+import {
+  buildPostsByDate,
+  buildYearWeekGrid,
+  filterWeeksForMobile,
+  buildMonthLabelsForWeeks,
+  countPostsInYear,
+  getWeekdayLabels,
+  type ActivityPost,
+} from '../lib/blog-activity';
+
+interface Props {
+  posts: ActivityPost[];
+}
+
+const { posts } = Astro.props;
+const displayYear = new Date().getFullYear();
+const postsByDate = buildPostsByDate(posts);
+const { weeks: yearWeeks } = buildYearWeekGrid(displayYear, postsByDate);
+const mobileWeeks = filterWeeksForMobile(yearWeeks);
+const desktopMonthLabels = buildMonthLabelsForWeeks(yearWeeks);
+const mobileMonthLabels = buildMonthLabelsForWeeks(mobileWeeks);
+const postsInYear = countPostsInYear(posts, displayYear);
+const weekdayLabels = getWeekdayLabels();
+---
+
+<section class="blog-activity" aria-labelledby="blog-activity-title">
+  <div class="blog-activity__header">
+    <div>
+      <h2 id="blog-activity-title" class="blog-activity__title">Posting Activity</h2>
+      <p class="blog-activity__summary">
+        {displayYear}年に <strong>{postsInYear}</strong> 件公開
+      </p>
+    </div>
+    <div class="blog-activity__legend" aria-hidden="true">
+      <span class="blog-activity__legend-label">少</span>
+      <span class="blog-activity__cell blog-activity__cell--0"></span>
+      <span class="blog-activity__cell blog-activity__cell--1"></span>
+      <span class="blog-activity__cell blog-activity__cell--2"></span>
+      <span class="blog-activity__cell blog-activity__cell--3"></span>
+      <span class="blog-activity__legend-label">多</span>
+    </div>
+  </div>
+
+  <BlogActivityGrid
+    weeks={mobileWeeks}
+    monthLabels={mobileMonthLabels}
+    weekdayLabels={weekdayLabels}
+    variant="mobile"
+  />
+
+  <BlogActivityGrid
+    weeks={yearWeeks}
+    monthLabels={desktopMonthLabels}
+    weekdayLabels={weekdayLabels}
+    variant="desktop"
+  />
+</section>
+
+<style>
+  .blog-activity {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: var(--default-border-width, 1.5px) solid var(--border-subtle);
+  }
+
+  .blog-activity__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .blog-activity__title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ash);
+    margin: 0;
+  }
+
+  .blog-activity__summary {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.8125rem;
+    color: var(--color-dust);
+    margin: 0.35rem 0 0;
+  }
+
+  .blog-activity__summary strong {
+    color: var(--color-cream);
+    font-weight: 600;
+  }
+
+  .blog-activity__legend {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .blog-activity__legend-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.625rem;
+    color: var(--color-ash);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .blog-activity__cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    display: block;
+    border: none;
+    padding: 0;
+    background-color: var(--color-depth);
+  }
+
+  .blog-activity__cell--0 {
+    background-color: color-mix(in srgb, var(--color-depth) 88%, var(--color-ash));
+  }
+
+  .blog-activity__cell--1 {
+    background-color: color-mix(in oklch, var(--color-signal-blue) 35%, var(--color-depth));
+  }
+
+  .blog-activity__cell--2 {
+    background-color: color-mix(in oklch, var(--color-signal-blue) 62%, var(--color-depth));
+  }
+
+  .blog-activity__cell--3 {
+    background-color: var(--color-signal-blue);
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LayoutContainer from '../../components/LayoutContainer.astro';
+import BlogActivityCalendar from '../../components/BlogActivityCalendar.astro';
 import { getCollection } from 'astro:content';
 import { collectUniqueTags, tagPageHref } from '../../lib/blog-tags';
 
@@ -9,6 +10,12 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const allTags = collectUniqueTags(posts);
+
+const activityPosts = posts.map((post) => ({
+  slug: post.slug,
+  title: post.data.title,
+  pubDate: post.data.pubDate,
+}));
 ---
 
 <BaseLayout title="Blog" description="ATAUブログ — 挑戦の記録">
@@ -36,6 +43,9 @@ const allTags = collectUniqueTags(posts);
             </a>
           ))}
         </div>
+      )}
+      {posts.length > 0 && (
+        <BlogActivityCalendar posts={activityPosts} />
       )}
     </LayoutContainer>
   </section>

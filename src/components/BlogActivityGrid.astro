@@ -1,0 +1,207 @@
+---
+import {
+  flattenWeekGrid,
+  activityDayHref,
+  activityDayLabel,
+  activityDayLevel,
+  type ActivityWeekColumn,
+  type ActivityMonthLabel,
+} from '../lib/blog-activity';
+
+interface Props {
+  weeks: ActivityWeekColumn[];
+  monthLabels: ActivityMonthLabel[];
+  weekdayLabels: readonly string[];
+  variant: 'mobile' | 'desktop';
+}
+
+const { weeks, monthLabels, weekdayLabels, variant } = Astro.props;
+const cells = flattenWeekGrid(weeks);
+---
+
+<div
+  class:list={['blog-activity__grid', `blog-activity__grid--${variant}`]}
+  style={`--activity-weeks: ${weeks.length}`}
+  aria-label={variant === 'mobile' ? 'ブログ投稿カレンダー（直近2ヶ月）' : 'ブログ投稿カレンダー（1月〜12月）'}
+>
+  <div class="blog-activity__month-row" aria-hidden="true">
+    <span></span>
+    <div class="blog-activity__month-track">
+      {
+        monthLabels.map(({ column, label }) => (
+          <span class="blog-activity__month-label" style={`grid-column: ${column + 1}`}>
+            {label}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="blog-activity__body">
+    <div class="blog-activity__weekday-labels" aria-hidden="true">
+      {
+        weekdayLabels.map((label, index) => (
+          <span
+            class:list={[
+              'blog-activity__weekday-label',
+              index % 2 === 0 && 'blog-activity__weekday-label--show',
+            ]}
+          >
+            {label}
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="blog-activity__cells" role="grid">
+      {
+        cells.map((day) => {
+          if (!day) {
+            return <span class="blog-activity__cell blog-activity__cell--empty" aria-hidden="true" />;
+          }
+
+          const href = activityDayHref(day);
+          const title = activityDayLabel(day);
+          const classNames = [
+            'blog-activity__cell',
+            `blog-activity__cell--${activityDayLevel(day.count)}`,
+            href && 'blog-activity__cell--link',
+          ];
+
+          return href ? (
+            <a href={href} class:list={classNames} role="gridcell" title={title} aria-label={title} />
+          ) : (
+            <span class:list={classNames} role="gridcell" title={title} aria-label={title} />
+          );
+        })
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .blog-activity__grid {
+    width: 100%;
+  }
+
+  .blog-activity__grid--mobile {
+    display: block;
+    --activity-cell-size: clamp(10px, 4.5vw, 14px);
+    --activity-gap: 3px;
+  }
+
+  .blog-activity__grid--desktop {
+    display: none;
+    --activity-cell-size: clamp(5px, 0.75vw, 9px);
+    --activity-gap: 2px;
+  }
+
+  @media (min-width: 1024px) {
+    .blog-activity__grid--mobile {
+      display: none;
+    }
+
+    .blog-activity__grid--desktop {
+      display: block;
+    }
+  }
+
+  .blog-activity__month-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .blog-activity__month-track {
+    display: grid;
+    grid-template-columns: repeat(var(--activity-weeks), minmax(0, 1fr));
+    gap: var(--activity-gap);
+  }
+
+  .blog-activity__month-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.625rem;
+    color: var(--color-ash);
+    white-space: nowrap;
+    grid-row: 1;
+  }
+
+  .blog-activity__body {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+    align-items: start;
+  }
+
+  .blog-activity__weekday-labels {
+    display: grid;
+    grid-template-rows: repeat(7, var(--activity-cell-size));
+    gap: var(--activity-gap);
+  }
+
+  .blog-activity__weekday-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5625rem;
+    line-height: var(--activity-cell-size);
+    color: var(--color-ash);
+    visibility: hidden;
+  }
+
+  .blog-activity__weekday-label--show {
+    visibility: visible;
+  }
+
+  .blog-activity__cells {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, var(--activity-cell-size));
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--activity-gap);
+  }
+
+  .blog-activity__cell {
+    width: 100%;
+    height: var(--activity-cell-size);
+    border-radius: 2px;
+    display: block;
+    border: none;
+    padding: 0;
+    background-color: var(--color-depth);
+  }
+
+  .blog-activity__cell--empty {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .blog-activity__cell--0 {
+    background-color: color-mix(in srgb, var(--color-depth) 88%, var(--color-ash));
+  }
+
+  .blog-activity__cell--1 {
+    background-color: color-mix(in oklch, var(--color-signal-blue) 35%, var(--color-depth));
+  }
+
+  .blog-activity__cell--2 {
+    background-color: color-mix(in oklch, var(--color-signal-blue) 62%, var(--color-depth));
+  }
+
+  .blog-activity__cell--3 {
+    background-color: var(--color-signal-blue);
+  }
+
+  .blog-activity__cell--link {
+    cursor: pointer;
+    transition: transform 0.15s ease, outline-color 0.15s ease;
+  }
+
+  .blog-activity__cell--link:hover {
+    transform: scale(1.12);
+  }
+
+  .blog-activity__cell--link:focus-visible {
+    outline: 2px solid var(--color-signal-gold);
+    outline-offset: 1px;
+  }
+</style>
