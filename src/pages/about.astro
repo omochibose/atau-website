@@ -1,20 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
+import PageCta from '../components/PageCta.astro';
+
+const career = [
+  { period: '〜2018', label: 'スポーツ × 統計学', detail: 'バスケットボール・ラグビーに打ち込む学生生活。大学では統計学をスポーツへ応用する研究に取り組み、データ分析の基盤を築く。' },
+  { period: '2018〜2019', label: 'アイルランド留学', detail: '語学・ラグビー留学。「やってみたいから行く」——理由はそれだけだった。この経験が挑戦することの原点になっている。' },
+  { period: '2019〜2023', label: 'IT業界 → 独立', detail: 'システム会社で営業・開発・経理を幅広く経験。フリーランスとして独立し、伴走型IT支援の手応えをつかむ。' },
+  { period: '2023〜', label: 'ATAU 創業', detail: '法人化。2024年にイギリス・バーミンガム大学でコンピュータサイエンス修士号を取得。技術と経営の両輪で事業を推進。' },
+];
 ---
 
-<BaseLayout title="About" description="ATAUについて — ミッション・バリュー・会社概要">
+<BaseLayout title="About" description="ATAUについて — 代表プロフィール・ミッション・バリュー・会社概要">
 
-  <!-- Page Header -->
-  <section class="pt-40 pb-16">
-    <LayoutContainer>
-      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Company</p>
-      <h1
-        class="font-display font-bold text-cream"
-        style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: -0.03em; line-height: 1.0;"
-      >
-        About
-      </h1>
+  <!-- Name Origin -->
+  <section class="bg-depth pt-40 pb-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-6">Name &amp; Reading</p>
+        <div class="flex items-baseline gap-4 mb-3">
+          <span
+            class="font-display font-bold text-cream"
+            style="font-size: clamp(3rem, 10vw, 5rem); letter-spacing: -0.04em; line-height: 1;"
+          >ATAU</span>
+          <span class="font-body text-dust text-xl">アタウ</span>
+        </div>
+        <p
+          class="font-display font-bold text-signal-gold mb-1"
+          style="font-size: clamp(1.5rem, 4vw, 2.25rem); letter-spacing: -0.02em;"
+        >能う</span></p>
+        <p class="font-body text-dust text-sm leading-relaxed mt-3">
+          できる、なし得る——古語「能う」を語源とする社名です。
+        </p>
+      </div>
+      <div class="pt-2 md:pt-16 flex flex-col gap-5">
+        <p class="font-body text-dust leading-relaxed">
+          「挑戦をなし得る」「能う限り（できる限り）頑張る」——そんな意志を込めた言葉が<strong class="text-cream font-semibold">ATAU</strong>の由来です。
+        </p>
+        <p class="font-body text-dust leading-relaxed">
+          正式名称の <strong class="text-cream font-semibold">ATAU Digital Design</strong> には、さらに二つの意味が重なっています。<strong class="text-cream font-semibold">Digital</strong>はデジタルの力、<strong class="text-cream font-semibold">Design</strong>は単なる「デザイン」ではなく「課題を解決する」という意味——ATAUはその名の通り、デジタルで挑戦を可能にする会社です。
+        </p>
+      </div>
     </LayoutContainer>
   </section>
 
@@ -39,8 +65,62 @@ import LayoutContainer from '../components/LayoutContainer.astro';
     </LayoutContainer>
   </section>
 
-  <!-- Values -->
+  <!-- Representative Profile -->
   <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Representative</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-12" style="letter-spacing: -0.02em;">
+        代表プロフィール
+      </h2>
+
+      <!-- Name + Career Timeline -->
+      <div class="grid md:grid-cols-2 gap-16 items-start mb-12">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-widest text-signal-blue mb-2">Founder &amp; CEO</p>
+          <h3 class="font-display font-bold text-3xl text-cream mb-1" style="letter-spacing: -0.02em;">
+            井上 景太
+          </h3>
+          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-8">Keita Inoue</p>
+          <p class="font-body text-dust leading-relaxed">
+            「やってみたいから」——井上の行動はいつもそこから始まります。バスケットボールとラグビーに打ち込んだ学生時代から、海外留学、IT業界への転身、そして起業まで。大きな計画より先に、まず一歩を踏み出してきた人物です。
+          </p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="flex flex-col gap-6">
+          {career.map((item) => (
+            <div class="flex gap-5 items-start">
+              <p class="font-mono text-xs text-ash shrink-0 pt-0.5 w-28">{item.period}</p>
+              <div class="border-l pl-5" style="border-color: var(--border-medium);">
+                <p class="font-mono text-xs text-signal-blue uppercase tracking-widest mb-1">{item.label}</p>
+                <p class="font-body text-dust text-sm leading-relaxed">{item.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 代表挨拶 -->
+      <div
+        class="p-8 border"
+        style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+      >
+        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-6">代表挨拶</p>
+        <div class="flex flex-col gap-4 font-body text-dust leading-relaxed mb-4">
+          <p>
+            「あの人が頑張っているなら、自分も頑張れる」——部活動の仲間と辛い練習を乗り越えてきた経験が、そのままATAUの思想に結びついています。大きな理由がなくても「やってみたい」と思えれば、それは十分な挑戦の動機。ATAUの挑戦する姿が、誰かの「自分もやってみよう」を生み出す——そんな連鎖を描いて、日々事業に取り組んでいます。
+          </p>
+          <p>
+            これまでスポーツも海外留学も、すべて自分のためだけの挑戦でした。しかし今、個人の経験や挑戦が誰かの役に立てるかもしれないという手応えを感じています。自社で徹底的に使い込んだプロダクトを世に出すATAUのスタイルは、まさにその姿勢の表れ。「個人の挑戦を誰かのために昇華する」という考えが、事業として持続可能な形になることを目指しています。
+          </p>
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mt-1">— 井上 景太</p>
+        </div>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Values -->
+  <section class="border-t py-16" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Values</p>
       <h2 class="font-display font-bold text-4xl text-cream mb-12" style="letter-spacing: -0.02em;">
@@ -80,7 +160,7 @@ import LayoutContainer from '../components/LayoutContainer.astro';
   </section>
 
   <!-- Company Info -->
-  <section class="border-t py-16" style="border-color: var(--border-subtle);">
+  <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Company Info</p>
       <h2 class="font-display font-bold text-4xl text-cream mb-12" style="letter-spacing: -0.02em;">
@@ -89,10 +169,10 @@ import LayoutContainer from '../components/LayoutContainer.astro';
       <dl>
         {[
           { label: '社名',       value: 'ATAU Digital Design 合同会社' },
-          { label: '設立年月日',       value: '2024年7月3日' },
-          { label: '資本金',       value: '100万円' },
+          { label: '設立年月日', value: '2023年7月3日' },
+          { label: '資本金',     value: '100万円' },
           { label: 'ミッション', value: '挑戦しやすい社会を創る' },
-          { label: '所在地', value: '東京都東村山市秋津町4-23-58' },
+          { label: '所在地',     value: '東京都東村山市秋津町4-23-58' },
           { label: '代表者社員', value: '井上景太' },
         ].map(({ label, value }) => (
           <div
@@ -108,5 +188,7 @@ import LayoutContainer from '../components/LayoutContainer.astro';
       </dl>
     </LayoutContainer>
   </section>
+
+  <PageCta class="bg-void" />
 
 </BaseLayout>

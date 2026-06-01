@@ -1,11 +1,12 @@
 ---
 /**
  * ボタン／リンク兼用のベース UI。variant・size・href を組み合わせて各所で使い分ける。
- * - primary: Signal Blue（主行動）
- * - secondary: Signal Gold 塗り（補助行動）
+ * - primary: Signal Blue（目立たせるが CTA ではない導線）
+ * - secondary: Signal Gold（お問い合わせなどコンバージョン）
+ * - line: LINE グリーン（低摩擦な相談導線）
  */
 interface Props {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'line';
   size?: 'sm' | 'md' | 'lg';
   /** 指定時は <a>、未指定時は <button> */
   href?: string;
@@ -36,6 +37,8 @@ const sizeClasses = {
 const variantClasses =
   variant === 'primary'
     ? 'bg-signal-blue text-white hover:opacity-90 transition-opacity'
+    : variant === 'line'
+    ? 'bg-[#06C755] text-white hover:opacity-90 transition-opacity'
     : 'bg-signal-gold text-white hover:opacity-90 transition-opacity';
 
 const focusRing =

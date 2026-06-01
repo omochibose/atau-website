@@ -3,34 +3,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PillarCard from '../components/PillarCard.astro';
 import BaseButton from '../components/BaseButton.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
+import WhatWeOffer from '../components/WhatWeOffer.astro';
+import PageCta from '../components/PageCta.astro';
 import { getCollection } from 'astro:content';
+import { mission, pillars } from '../lib/site-messaging';
 
 const posts = (await getCollection('blog'))
   .filter(p => !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+const pageDescription =
+  'ATAUは挑戦しやすい社会を創ることをミッションに、外付けIT部門として開発・自動化・相談・小さなDXを伴走型で提供します。';
 ---
 
-<BaseLayout title="Home" description="ATAUは挑戦しやすい社会を創ることをミッションとする会社です。">
+<BaseLayout title="Home" description={pageDescription}>
 
-  <!-- Hero（グレー） -->
+  <!-- Why -->
   <section class="bg-grid-6 bg-depth min-h-screen flex flex-col justify-center pt-24 pb-16">
     <LayoutContainer class="relative z-10">
         <div class="min-w-0">
-            <p class="text-center font-display font-bold text-xs uppercase tracking-widest text-cream mb-4" style="font-size: clamp(1.5rem, 8vw, 2rem);">Inspire Ambition</p>
+            <p class="text-center font-display font-bold text-xs uppercase tracking-widest text-cream mb-4" style="font-size: clamp(1.5rem, 8vw, 2rem);">{mission.tagline}</p>
             <h1
               class="text-center font-display font-bold text-cream mb-8"
               style="font-size: clamp(0.5rem, 8vw, 1.3rem); letter-spacing: -0.03em; line-height: 1.0;"
             >
-              挑戦しやすい社会を創る
+              {mission.title}
             </h1>
-            <p class="text-center font-body text-dust text-sm leading-relaxed sm:text-base md:text-lg mb-8">
-              皆が挑戦しやすい社会はきっと素晴らしい。<br />
-              ATAUは「挑戦しやすい社会を創る」という挑戦に取り組んでいます。
+            <p class="text-center font-body text-dust text-sm leading-relaxed sm:text-base md:text-lg mb-8 max-w-3xl mx-auto">
+              {mission.lead}
             </p>
-            <div class="flex justify-center flex-row gap-4">
-              <BaseButton href="/business" variant="primary" size="sm">Our Business</BaseButton>
-              <BaseButton href="/about" variant="secondary" size="sm">About Us</BaseButton>
+            <div class="flex justify-center flex-row flex-wrap gap-4">
+              <BaseButton href="/contact" variant="secondary" size="sm">ITのご相談</BaseButton>
+              <BaseButton href="/business#offerings" variant="primary" size="sm">提供内容を見る</BaseButton>
             </div>
           <div class="mt-8 flex flex-col items-center">
             <img
@@ -38,7 +43,7 @@ const posts = (await getCollection('blog'))
               alt="ATAUのブランドを象徴するヒーローイラスト"
               width="1080"
               height="1080"
-              class="h-auto w-2/3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg select-none"
+              class="h-auto w-1/2 md:w-1/4 select-none mt-4"
               loading="eager"
               decoding="async"
               fetchpriority="high"
@@ -56,45 +61,40 @@ const posts = (await getCollection('blog'))
     </LayoutContainer>
   </section>
 
-  <!-- Three Pillars（黒） -->
-  <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
+  <WhatWeOffer class="bg-void" />
+
+  <!-- How -->
+  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
-      <div class="mb-10">
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Business</p>
-        <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
-          事業の三本柱
+      <div class="mb-10 max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">How</p>
+        <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+          3つの柱
         </h2>
+        <p class="font-body text-dust text-sm leading-relaxed sm:text-base">
+          Inspire・Amplify・Empowerの3つで、自ら挑戦し、その過程を発信し、ITで他者の挑戦を支えます。
+        </p>
       </div>
       <div class="grid md:grid-cols-3 gap-4">
-        <PillarCard
-          number="01"
-          title="Inspire"
-          subtitle="挑戦を生み出す"
-          description="ATAUが率先して高い目標に挑戦することで、他者に挑戦する勇気を。自社の挑戦そのものがプロダクトであり、メッセージである。"
-        />
-        <PillarCard
-          number="02"
-          title="Amplify"
-          subtitle="挑戦を広める"
-          description="自社および他者の挑戦のプロセスと成果を広報・発信することで、前例を社会に蓄積する。前例は次の挑戦者の勇気になる。"
-        />
-        <PillarCard
-          number="03"
-          title="Empower"
-          subtitle="挑戦を後押しする"
-          description="挑戦の過程で獲得した知見をサービス・プロダクトとして昇華し、他者の挑戦を実質的に支援する。"
-        />
+        {pillars.map((pillar) => (
+          <PillarCard
+            number={pillar.number}
+            title={pillar.title}
+            subtitle={pillar.subtitle}
+            description={pillar.description}
+          />
+        ))}
       </div>
       <div class="mt-8 text-right">
         <a href="/business" class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity">
-          Learn More →
+          3つの柱を詳しく見る →
         </a>
       </div>
     </LayoutContainer>
   </section>
 
-  <!-- Values（グレー） -->
-  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+  <!-- Values -->
+  <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
       <div class="mb-10">
         <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Values</p>
@@ -123,9 +123,8 @@ const posts = (await getCollection('blog'))
     </LayoutContainer>
   </section>
 
-  <!-- Latest Blog Posts -->
   {posts.length > 0 && (
-    <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
+    <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
       <LayoutContainer>
         <div class="flex justify-between items-end mb-10">
           <div>
@@ -162,29 +161,6 @@ const posts = (await getCollection('blog'))
     </section>
   )}
 
-  <!-- CTA（ブログあり→グレーで締め / なし→黒で締め＝常に交互） -->
-  <section
-    class:list={[
-      'bg-grid-6',
-      'border-t',
-      'py-32',
-      posts.length > 0 ? 'bg-depth' : 'bg-void',
-    ]}
-    style="border-color: var(--border-subtle);"
-  >
-    <LayoutContainer class="text-center relative z-10">
-      <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-6">Get in Touch</p>
-      <h2
-        class="font-display font-bold text-cream mb-6"
-        style="font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em; line-height: 1.0;"
-      >
-        一緒に挑戦しよう
-      </h2>
-      <p class="font-body text-dust text-lg max-w-lg mx-auto leading-relaxed mb-10">
-        ATAUとの協業・採用に関するお問い合わせはこちらから。
-      </p>
-      <BaseButton href="/contact" variant="primary" size="lg">Contact Us</BaseButton>
-    </LayoutContainer>
-  </section>
+  <PageCta class={posts.length > 0 ? 'bg-void' : 'bg-depth'} />
 
 </BaseLayout>

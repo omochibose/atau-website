@@ -1,0 +1,106 @@
+---
+import BaseButton from './BaseButton.astro';
+import LayoutContainer from './LayoutContainer.astro';
+import {
+  consultationTopics,
+  productOfferings,
+  serviceOfferings,
+  showProductOfferings,
+  whatOffer,
+} from '../lib/site-messaging';
+
+interface Props {
+  /** セクション見出し下のリードを上書き */
+  lead?: string;
+  showCta?: boolean;
+  class?: string;
+}
+
+const { lead = whatOffer.lead, showCta = true, class: className } = Astro.props;
+---
+
+<section
+  id="offerings"
+  class:list={['border-t py-24', className]}
+  style="border-color: var(--border-subtle);"
+>
+  <LayoutContainer>
+    <div class="mb-12 max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">{whatOffer.label}</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+        {whatOffer.heading}
+      </h2>
+      <p class="font-body text-dust text-lg leading-relaxed">{lead}</p>
+    </div>
+
+    <div class="mb-14">
+      <p class="font-mono text-xs uppercase tracking-widest text-signal-blue mb-6">Services</p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {serviceOfferings.map((item) => (
+          <a
+            href={item.href}
+            class="block p-6 border group hover:border-signal-blue transition-colors duration-200"
+            style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+          >
+            <h3
+              class="font-display font-semibold text-xl text-cream group-hover:text-signal-blue transition-colors mb-2"
+              style="letter-spacing: -0.01em;"
+            >
+              {item.title}
+            </h3>
+            <p class="font-body text-dust text-sm leading-relaxed">{item.description}</p>
+            <p class="font-mono text-xs text-ash uppercase tracking-widest mt-4 group-hover:text-signal-blue transition-colors">
+              詳しく読む →
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {showProductOfferings && (
+      <div class="mb-14">
+        <p class="font-mono text-xs uppercase tracking-widest text-signal-blue mb-6">Products</p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {productOfferings.map((item) => (
+            <a
+              href={item.href}
+              class="block p-6 border group hover:border-signal-blue transition-colors duration-200"
+              style="border-color: var(--border-subtle); border-radius: var(--radius-lg);"
+            >
+              <h3
+                class="font-display font-semibold text-xl text-cream group-hover:text-signal-blue transition-colors mb-2"
+                style="letter-spacing: -0.01em;"
+              >
+                {item.title}
+              </h3>
+              <p class="font-body text-dust text-sm leading-relaxed">{item.description}</p>
+              <p class="font-mono text-xs text-ash uppercase tracking-widest mt-4 group-hover:text-signal-blue transition-colors">
+                背景を読む →
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div
+      class="p-8 border"
+      style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+    >
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">こんなご相談を歓迎します</p>
+      <ul class="grid sm:grid-cols-2 gap-3 mb-6">
+        {consultationTopics.map((topic) => (
+          <li class="font-body text-dust text-sm leading-relaxed flex gap-2">
+            <span class="text-signal-blue shrink-0" aria-hidden="true">—</span>
+            <span>{topic}</span>
+          </li>
+        ))}
+      </ul>
+      {showCta && (
+        <BaseButton href="/contact" variant="secondary" size="sm">
+          ITのご相談
+        </BaseButton>
+      )}
+    </div>
+  </LayoutContainer>
+</section>

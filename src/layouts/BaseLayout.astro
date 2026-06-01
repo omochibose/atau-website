@@ -6,9 +6,22 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  pubDate?: Date;
 }
 
-const { title, description = 'ATAU — 挑戦しやすい社会を創る' } = Astro.props;
+const {
+  title,
+  description = 'ATAU — ITで挑戦を後押しする。外付けIT・開発・自動化・小さなDX',
+  ogType = 'website',
+  ogImage,
+  pubDate,
+} = Astro.props;
+
+const pageTitle = `${title} | ATAU`;
+const canonicalUrl = Astro.url.href;
+const ogImageUrl = new URL(ogImage ?? '/og-default.png', Astro.site).href;
 ---
 
 <!doctype html>
@@ -16,9 +29,28 @@ const { title, description = 'ATAU — 挑戦しやすい社会を創る' } = As
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | ATAU</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- OGP -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="ATAU" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ja_JP" />
+    {pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
       rel="stylesheet"

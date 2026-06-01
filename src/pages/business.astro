@@ -1,99 +1,77 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
+import WhatWeOffer from '../components/WhatWeOffer.astro';
+import PageCta from '../components/PageCta.astro';
+import { mission, pillars } from '../lib/site-messaging';
+
+const pageDescription =
+  'Inspire・Amplify・Empowerの3つの柱と、外付けIT・開発・自動化など、ATAUの提供内容をご紹介します。';
 ---
 
-<BaseLayout title="Business" description="ATAUの事業領域 — Inspire, Amplify, Empower">
+<BaseLayout title="Business" description={pageDescription}>
 
-  <!-- Page Header -->
-  <section class="pt-40 pb-16">
+  <section class="pt-40 pb-12">
     <LayoutContainer>
-      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Business</p>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Why</p>
       <h1
         class="font-display font-bold text-cream mb-6"
         style="font-size: clamp(1.5rem, 8vw, 2rem); letter-spacing: -0.03em; line-height: 1.0;"
       >
-        挑戦を連鎖させる３つの事業
+        {mission.title}
       </h1>
       <p class="font-body text-dust text-lg max-w-2xl leading-relaxed">
-        ATAUは「Inspire」を上位概念として、「Amplify」と「Empower」をその手段として事業を展開しています。
+        {mission.lead} そのために、Inspire・Amplify・Empowerの3つの柱を軸に、ITで挑戦を後押しします。
       </p>
     </LayoutContainer>
   </section>
 
-  <!-- 01 Inspire -->
+  <WhatWeOffer
+    class="bg-depth"
+    lead="伴走型のITサービスについて、以下のとおりご紹介します。詳細はブログでも発信しています。"
+    showCta={false}
+  />
+
   <section class="border-t py-16" style="border-color: var(--border-subtle);">
-    <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
-      <div>
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">01</p>
-        <h2 class="font-display font-bold text-5xl text-cream mb-2" style="letter-spacing: -0.02em;">
-          Inspire
-        </h2>
-        <p class="font-mono text-xs uppercase tracking-widest text-dust mb-8">挑戦を生み出す</p>
-        <p class="font-body text-dust text-lg leading-relaxed">
-          ATAUが率先して高い目標に挑戦することで、他者の挑戦の火を灯す。自社の挑戦そのものがプロダクトであり、メッセージである。
-        </p>
-      </div>
-      <div
-        class="p-8 border"
-        style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
-      >
-        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">Concept</p>
-        <p class="font-body text-dust leading-relaxed">
-          私たち自身が高い目標に挑戦し続けることで、「やればできる」という前例を社会に示す。自社の存在と活動そのものが、他者への勇気となる。
-        </p>
-      </div>
+    <LayoutContainer class="mb-4 max-w-2xl">
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">How</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+        Inspire・Amplify・Empower
+      </h2>
+      <p class="font-body text-dust text-lg leading-relaxed">
+        3つの柱はどれも大切にしており、自ら挑戦する（Inspire）、伝える（Amplify）、ITで支える（Empower）という役割を担います。
+      </p>
     </LayoutContainer>
   </section>
 
-  <!-- 02 Amplify -->
-  <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
-    <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
-      <div class="md:order-2">
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">02</p>
-        <h2 class="font-display font-bold text-5xl text-cream mb-2" style="letter-spacing: -0.02em;">
-          Amplify
-        </h2>
-        <p class="font-mono text-xs uppercase tracking-widest text-dust mb-8">挑戦を広める</p>
-        <p class="font-body text-dust text-lg leading-relaxed">
-          自社および他者の挑戦のプロセスと成果を広報・発信することで、前例を社会に蓄積する。前例は次の挑戦者の勇気になる。
-        </p>
-      </div>
-      <div
-        class="md:order-1 p-8 border"
-        style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
-      >
-        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">Concept</p>
-        <p class="font-body text-dust leading-relaxed">
-          挑戦のプロセスを可視化し発信することで、社会全体の「挑戦の前例」を増やす。一つの成功が、次の千の挑戦を生む。
-        </p>
-      </div>
-    </LayoutContainer>
-  </section>
+  {pillars.map((pillar, index) => (
+    <section
+      class:list={['border-t py-16', index % 2 === 1 && 'bg-depth']}
+      style="border-color: var(--border-subtle);"
+    >
+      <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
+        <div class:list={[index % 2 === 1 && 'md:order-2']}>
+          <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">{pillar.number}</p>
+          <h2 class="font-display font-bold text-5xl text-cream mb-2" style="letter-spacing: -0.02em;">
+            {pillar.title}
+          </h2>
+          <p class="font-mono text-xs uppercase tracking-widest text-dust mb-8">{pillar.subtitle}</p>
+          <p class="font-body text-dust text-lg leading-relaxed">{pillar.description}</p>
+        </div>
+        <div
+          class:list={[
+            'p-8 border',
+            index % 2 === 1 && 'md:order-1',
+          ]}
+          style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+        >
+          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">{pillar.detailLabel}</p>
+          <p class="font-body text-dust leading-relaxed">{pillar.detail}</p>
+        </div>
+      </LayoutContainer>
+    </section>
+  ))}
 
-  <!-- 03 Empower -->
-  <section class="border-t py-16" style="border-color: var(--border-subtle);">
-    <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
-      <div>
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">03</p>
-        <h2 class="font-display font-bold text-5xl text-cream mb-2" style="letter-spacing: -0.02em;">
-          Empower
-        </h2>
-        <p class="font-mono text-xs uppercase tracking-widest text-dust mb-8">挑戦を後押しする</p>
-        <p class="font-body text-dust text-lg leading-relaxed">
-          挑戦の過程で獲得した知見をサービス・プロダクトとして昇華し、他者の挑戦を実質的に支援する。
-        </p>
-      </div>
-      <div
-        class="p-8 border"
-        style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
-      >
-        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">Concept</p>
-        <p class="font-body text-dust leading-relaxed">
-          ATAUの経験から生まれたサービスやツールで、挑戦者の壁を取り除く。知見を製品化し、より多くの挑戦を実質的に支える仕組みを作る。
-        </p>
-      </div>
-    </LayoutContainer>
-  </section>
+  <PageCta class="bg-depth" />
 
 </BaseLayout>

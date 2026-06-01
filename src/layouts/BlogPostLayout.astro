@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
 import BlogTableOfContents from '../components/BlogTableOfContents.astro';
+import BlogCta from '../components/BlogCta.astro';
 import { tagPageHref } from '../lib/blog-tags';
 import type { TocHeading } from '../lib/blog-toc';
 
@@ -17,7 +18,7 @@ const { title, description, pubDate, tags = [], tocHeadings = [] } = Astro.props
 const hasToc = tocHeadings.length > 0;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogType="article" {pubDate}>
   <article class="blog-post pt-32 pb-24">
     <LayoutContainer>
       <div class:list={['blog-article-shell', hasToc && 'blog-article-shell--with-toc']}>
@@ -52,6 +53,7 @@ const hasToc = tocHeadings.length > 0;
             <div class="prose-atau">
               <slot />
             </div>
+            <BlogCta />
           </div>
 
           <div class="mt-16 pt-8 border-t" style="border-color: var(--border-subtle);">

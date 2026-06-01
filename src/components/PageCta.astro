@@ -1,0 +1,52 @@
+---
+import BaseButton from './BaseButton.astro';
+import LayoutContainer from './LayoutContainer.astro';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  class?: string;
+}
+
+const {
+  heading = 'ITのご相談・お問い合わせ',
+  body = '業務改善・システム開発などITのご相談はもちろん、採用・取材のご連絡もこちらから。2営業日以内にご返答します。',
+  class: className,
+} = Astro.props;
+---
+
+<section
+  class:list={['border-t bg-grid-6 py-24', className]}
+  style="border-color: var(--border-subtle);"
+>
+  <LayoutContainer class="text-center relative z-10">
+    <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-6">Get in Touch</p>
+    <h2
+      class="font-display font-bold text-cream mb-6"
+      style="font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.03em; line-height: 1.1;"
+    >
+      {heading}
+    </h2>
+    <p class="font-body text-dust text-lg max-w-xl mx-auto leading-relaxed mb-10">{body}</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <BaseButton href="/contact" variant="secondary" size="lg">
+        お問い合わせ
+      </BaseButton>
+      <BaseButton
+        href="https://lin.ee/XmVPtXM"
+        variant="line"
+        size="lg"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="mr-2 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 1C5.925 1 1 5.514 1 11.111c0 4.92 3.653 9.037 8.615 9.972l-.395 2.29c-.083.481.488.839.898.554L14.8 20.64C16.3 20.196 17.658 19.46 18.802 18.5 21.302 16.538 23 13.5 23 11.111 23 5.514 18.075 1 12 1z"/>
+        </svg>
+        LINEで気軽に相談
+      </BaseButton>
+      <BaseButton href="/business#offerings" variant="primary" size="lg">
+        提供内容を見る
+      </BaseButton>
+    </div>
+  </LayoutContainer>
+</section>
