@@ -3,75 +3,161 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
 import WhatWeOffer from '../components/WhatWeOffer.astro';
 import PageCta from '../components/PageCta.astro';
-import { mission, pillars } from '../lib/site-messaging';
 
 const pageDescription =
-  'Inspire・Amplify・Empowerの3つの柱と、外付けIT・開発・自動化など、ATAUの提供内容をご紹介します。';
+  'ATAUがクライアントに提供できる価値——外付けIT部門・システム開発・業務自動化・IT相談・小さなDXをご紹介します。';
+
+const targets = [
+  {
+    label: 'Target 01',
+    title: 'IT担当者・IT部門がいない中小企業',
+    body: '「何をすればいいかわからない」「ツールを選びたいが基準がわからない」——そんな段階から一緒に考えます。大がかりなシステム導入でなくても、既存の業務フローを少し工夫するだけで第一歩を踏み出せます。',
+  },
+  {
+    label: 'Target 02',
+    title: '個人事業主・BtoCビジネスのオーナー',
+    body: 'IT化の必要性は感じていても、大手のIT会社に相談するほどでもないと感じている方。どこに声をかければいいか迷っているケースこそ、気軽に話しかけてください。',
+  },
+  {
+    label: 'Target 03',
+    title: 'ITに関して「誰に相談すればいいかわからない」方',
+    body: '課題が明確でなくても構いません。「なんとなく不便を感じている」程度でも話を聞きます。ATAUはかかりつけ医のような存在——専門的な処置が必要かどうかを判断する前に、まず気軽に相談できる窓口です。',
+  },
+];
+
+const steps = [
+  {
+    number: '01',
+    title: 'まず連絡するだけ',
+    body: 'フォームまたはLINEからご連絡ください。解決したい課題が整理されていなくても大丈夫。「なんとなくこんなことがしたい」という温度感で十分です。初回の相談に費用はかかりません。',
+  },
+  {
+    number: '02',
+    title: '状況・課題のヒアリング',
+    body: '現在の業務フロー・困っていること・やってみたいことを一緒に整理します。何を導入するかを決める前に、まず「何が課題か」を明確にすることを大切にしています。',
+  },
+  {
+    number: '03',
+    title: '提案・方針の整理',
+    body: '課題に合わせた解決策を提案します。大きなシステム開発から、小さな自動化まで。費用・期間・進め方の目安をお伝えした上で、一緒に方針を決めます。',
+  },
+  {
+    number: '04',
+    title: '伴走開始',
+    body: '小さく始めて、効果を確認しながら広げていきます。「入れたら終わり」ではなく、使い続けられる状態になるまで伴走します。',
+  },
+];
 ---
 
-<BaseLayout title="Business" description={pageDescription}>
+<BaseLayout title="Offers for Clients" description={pageDescription}>
 
+  <!-- Page Header -->
   <section class="pt-40 pb-12">
     <LayoutContainer>
-      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Why</p>
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">Offers for Clients</p>
       <h1
         class="font-display font-bold text-cream mb-6"
-        style="font-size: clamp(1.5rem, 8vw, 2rem); letter-spacing: -0.03em; line-height: 1.0;"
+        style="font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -0.03em; line-height: 1.1;"
       >
-        {mission.title}
+        クライアントに提供できる価値
       </h1>
       <p class="font-body text-dust text-lg max-w-2xl leading-relaxed">
-        {mission.lead} そのために、Inspire・Amplify・Empowerの3つの柱を軸に、ITで挑戦を後押しします。
+        ATAUは、IT部門を持たない中小企業の「外付けIT部門」として、開発・自動化・相談・小さなDXを伴走型で提供します。「何から始めればいいかわからない」という段階から、一緒に考えます。
       </p>
     </LayoutContainer>
   </section>
 
+  <!-- Target -->
+  <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <div class="mb-10 max-w-3xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">For Who</p>
+        <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+          こんな会社・方に向いています
+        </h2>
+        <p class="font-body text-dust leading-relaxed">
+          ミスマッチを防ぐために、ATAUのサービスが特に価値を発揮できる対象を正直にお伝えします。
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-8">
+        {targets.map((t) => (
+          <div
+            class="p-8 border"
+            style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+          >
+            <p class="font-mono text-xs text-signal-blue uppercase tracking-widest mb-3">{t.label}</p>
+            <h3 class="font-display font-semibold text-lg text-cream mb-4" style="letter-spacing: -0.01em;">
+              {t.title}
+            </h3>
+            <p class="font-body text-dust text-sm leading-relaxed">{t.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Not a good fit (honest) -->
+      <div
+        class="p-6 border"
+        style="border-color: var(--border-subtle); border-radius: var(--radius-lg);"
+      >
+        <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">向いていないケース（正直にお伝えします）</p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {[
+            { title: 'IT部門を自社で内製化したい企業', body: '自社への人材・ノウハウの蓄積を優先する方向が合っています。採用・育成への投資をお勧めします。' },
+            { title: '開発者（エンジニア）を探している', body: '特定の開発業務のみを外注したい場合、ATAUの伴走型サポートとはやや異なります。開発会社やフリーランスマッチングが目的に合っているかもしれません。' },
+          ].map((item) => (
+            <div class="flex gap-3">
+              <span class="text-ash shrink-0 mt-0.5" aria-hidden="true">—</span>
+              <div>
+                <p class="font-body text-sm text-cream font-medium mb-1">{item.title}</p>
+                <p class="font-body text-dust text-sm leading-relaxed">{item.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="font-body text-dust text-sm leading-relaxed mt-5 pt-5 border-t" style="border-color: var(--border-subtle);">
+          「将来的には内製化したいが、今すぐは難しい」という状況であれば、ぜひATAUに声をかけてください。そのような段階からでも、喜んでお役に立ちます。
+        </p>
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <!-- Services -->
   <WhatWeOffer
-    class="bg-depth"
     lead="伴走型のITサービスについて、以下のとおりご紹介します。詳細はブログでも発信しています。"
     showCta={false}
   />
 
-  <section class="border-t py-16" style="border-color: var(--border-subtle);">
-    <LayoutContainer class="mb-4 max-w-2xl">
-      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">How</p>
-      <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
-        Inspire・Amplify・Empower
-      </h2>
-      <p class="font-body text-dust text-lg leading-relaxed">
-        3つの柱はどれも大切にしており、自ら挑戦する（Inspire）、伝える（Amplify）、ITで支える（Empower）という役割を担います。
-      </p>
+  <!-- Process -->
+  <section class="border-t bg-depth py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <div class="mb-10 max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">How to Start</p>
+        <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+          はじめ方・進め方
+        </h2>
+        <p class="font-body text-dust leading-relaxed">
+          ATAUでは、相談に関して費用はいただいておりません。何か具体的な要望がなくても「なんとなく話を聞いてみたい」という段階からでも喜んでお伺いします。
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {steps.map((step) => (
+          <div
+            class="p-6 border"
+            style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+          >
+            <p class="font-mono text-3xl font-bold text-signal-blue mb-4" style="letter-spacing: -0.04em;">{step.number}</p>
+            <h3 class="font-display font-semibold text-base text-cream mb-3" style="letter-spacing: -0.01em;">
+              {step.title}
+            </h3>
+            <p class="font-body text-dust text-sm leading-relaxed">{step.body}</p>
+          </div>
+        ))}
+      </div>
     </LayoutContainer>
   </section>
 
-  {pillars.map((pillar, index) => (
-    <section
-      class:list={['border-t py-16', index % 2 === 1 && 'bg-depth']}
-      style="border-color: var(--border-subtle);"
-    >
-      <LayoutContainer class="grid md:grid-cols-2 gap-16 items-start">
-        <div class:list={[index % 2 === 1 && 'md:order-2']}>
-          <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">{pillar.number}</p>
-          <h2 class="font-display font-bold text-5xl text-cream mb-2" style="letter-spacing: -0.02em;">
-            {pillar.title}
-          </h2>
-          <p class="font-mono text-xs uppercase tracking-widest text-dust mb-8">{pillar.subtitle}</p>
-          <p class="font-body text-dust text-lg leading-relaxed">{pillar.description}</p>
-        </div>
-        <div
-          class:list={[
-            'p-8 border',
-            index % 2 === 1 && 'md:order-1',
-          ]}
-          style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
-        >
-          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-4">{pillar.detailLabel}</p>
-          <p class="font-body text-dust leading-relaxed">{pillar.detail}</p>
-        </div>
-      </LayoutContainer>
-    </section>
-  ))}
-
-  <PageCta class="bg-depth" />
+  <PageCta class="bg-void" />
 
 </BaseLayout>
