@@ -1,0 +1,109 @@
+---
+import BaseButton from './BaseButton.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+import {
+  amplifyWhat,
+  consultationTopics,
+  empowerServices,
+  inspireWhat,
+  whatByPillar,
+} from '../lib/site-messaging';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const prosePillars = [inspireWhat, amplifyWhat] as const;
+---
+
+<section
+  id="what"
+  class:list={['border-t py-24', className]}
+  style="border-color: var(--border-subtle);"
+>
+  <LayoutContainer>
+    <div class="mb-12 max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">{whatByPillar.label}</p>
+      <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
+        {whatByPillar.heading}
+      </h2>
+      <p class="font-body text-dust text-lg leading-relaxed">{whatByPillar.lead}</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-4 mb-12">
+      {prosePillars.map((pillar) => (
+        <div
+          class="p-6 border flex flex-col"
+          style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+        >
+          <p class="font-mono text-xs uppercase tracking-widest text-signal-blue mb-2">{pillar.title}</p>
+          <h3 class="font-display font-semibold text-xl text-cream mb-4" style="letter-spacing: -0.01em;">
+            {pillar.subtitle}
+          </h3>
+          <p class="font-body text-dust text-sm leading-relaxed flex-1">{pillar.description}</p>
+          <a
+            href={pillar.href}
+            class="font-mono text-xs text-ash uppercase tracking-widest mt-5 hover:text-signal-blue transition-colors"
+          >
+            {pillar.linkLabel} →
+          </a>
+        </div>
+      ))}
+
+      <div
+        class="p-6 border flex flex-col"
+        style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+      >
+        <p class="font-mono text-xs uppercase tracking-widest text-signal-blue mb-2">Empower</p>
+        <h3 class="font-display font-semibold text-xl text-cream mb-4" style="letter-spacing: -0.01em;">
+          挑戦を後押しする
+        </h3>
+        <p class="font-body text-dust text-sm leading-relaxed mb-5">
+          クライアントが活用できるサービス群です。IT部門を持たない中小企業向けに、伴走型で提供しています。
+        </p>
+        <ul class="space-y-3 flex-1">
+          {empowerServices.map((item) => (
+            <li class="font-body text-sm leading-relaxed">
+              <a
+                href={item.href}
+                class="text-dust hover:text-signal-blue transition-colors"
+                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="p-8 border mb-8"
+      style="border-color: var(--border-subtle); border-radius: var(--radius-lg);"
+    >
+      <p class="font-mono text-xs uppercase tracking-widest text-ash mb-4">こんなご相談を歓迎します</p>
+      <ul class="grid sm:grid-cols-2 gap-3 mb-6">
+        {consultationTopics.map((topic) => (
+          <li class="font-body text-dust text-sm leading-relaxed flex gap-2">
+            <span class="text-signal-blue shrink-0" aria-hidden="true">—</span>
+            <span>{topic}</span>
+          </li>
+        ))}
+      </ul>
+      <BaseButton href="/contact" variant="secondary" size="sm">
+        ITのご相談
+      </BaseButton>
+    </div>
+
+    <div class="text-right">
+      <a
+        href={whatByPillar.detailHref}
+        class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity"
+      >
+        {whatByPillar.detailLabel} →
+      </a>
+    </div>
+  </LayoutContainer>
+</section>

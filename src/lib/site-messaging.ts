@@ -6,6 +6,70 @@ export const mission = {
   lead: '皆が挑戦しやすい社会はきっと素晴らしい。ATAUは、ITの力でその挑戦を実現します。',
 } as const;
 
+export const howOffer = {
+  label: 'How',
+  heading: '挑戦しやすい社会を創るための3つの事業',
+  lead: 'Inspire・Amplify・Empowerの3つで、自ら挑戦し、その過程を発信し、ITで他者の挑戦を支えます。',
+  why:
+    '生活は比較的満ち足りている一方で、挑戦するきっかけは生まれにくい——ATAUは、この「現代特有の挑戦しにくさ」に向き合うために、以下の3つの事業を掲げています。',
+  visionHref: '/blog/atau_vision_eudaimonia',
+  visionLinkLabel: 'なぜ「挑戦しやすい社会」を目指すのか',
+  detailHref: '/blog/atau_pillars_article',
+  detailLabel: '3つの柱を詳しく見る',
+} as const;
+
+export const whatByPillar = {
+  label: 'What',
+  heading: '各事業の柱における具体的な活動',
+  lead: '3つの柱それぞれで、いま取り組んでいることと提供しているサービスをご紹介します。',
+  detailHref: '/blog/atau_what_we_do',
+  detailLabel: '活動一覧を詳しく見る',
+} as const;
+
+export const inspireWhat = {
+  title: 'Inspire',
+  subtitle: '挑戦を生み出す',
+  description:
+    'ATAU自身がさまざまな領域に挑戦し続ける活動です。中期的な目標としてスポーツクラブの運営・経営を掲げ、いまは代表がテニスに本気で取り組むところから始めています。既存クラブとの協業やアカデミーへの参画、イベント企画などへ段階的に広げていく予定です。',
+  href: '/blog/atau_sports_club_vision',
+  linkLabel: '背景を読む',
+} as const;
+
+export const amplifyWhat = {
+  title: 'Amplify',
+  subtitle: '挑戦を広める',
+  description:
+    '挑戦にまつわるストーリーを発信・拡散していく活動です。ATAUの挑戦プロセスをブログなどで公開するほか、他社・他者の挑戦にも光を当てるコンテンツを展開していきます。インタビュー記事や事例紹介、Noteなどでの発信も予定しています。',
+  href: '/blog',
+  linkLabel: 'ブログを見る',
+} as const;
+
+export type EmpowerServiceItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+export const empowerServices: readonly EmpowerServiceItem[] = [
+  {
+    label: '外付けIT部門（無料相談窓口）',
+    href: '/blog/atau_external_it_article',
+  },
+  {
+    label: 'Web集客支援（Web制作・運用）',
+    href: '/blog/atau_branding_article',
+  },
+  {
+    label: 'Intaview（記事執筆AI支援サービス）',
+    href: 'https://intaview.app/',
+    external: true,
+  },
+  {
+    label: '業務自動化・DX導入支援',
+    href: '/blog/atau_dx_article',
+  },
+];
+
 export const whatOffer = {
   label: 'What',
   heading: 'ITで、現場の挑戦を後押しする',

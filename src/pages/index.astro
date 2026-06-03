@@ -3,10 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PillarCard from '../components/PillarCard.astro';
 import BaseButton from '../components/BaseButton.astro';
 import LayoutContainer from '../components/LayoutContainer.astro';
-import WhatWeOffer from '../components/WhatWeOffer.astro';
+import WhatByPillar from '../components/WhatByPillar.astro';
 import PageCta from '../components/PageCta.astro';
 import { getCollection } from 'astro:content';
-import { mission, pillars } from '../lib/site-messaging';
+import { howOffer, mission, pillars } from '../lib/site-messaging';
 
 const posts = (await getCollection('blog'))
   .filter(p => !p.data.draft)
@@ -14,12 +14,12 @@ const posts = (await getCollection('blog'))
   .slice(0, 3);
 
 const pageDescription =
-  'ATAUは挑戦しやすい社会を創ることをミッションに、外付けIT部門として開発・自動化・相談・小さなDXを伴走型で提供します。';
+  'ATAUは挑戦しやすい社会を創ることをミッションに、Inspire・Amplify・Empowerの3つの事業を通じて、外付けIT・開発・自動化を伴走型で提供します。';
 ---
 
 <BaseLayout title="Home" description={pageDescription}>
 
-  <!-- Why -->
+  <!-- Hero -->
   <section class="bg-grid-6 bg-depth min-h-screen flex flex-col justify-center pt-24 pb-16">
     <LayoutContainer class="relative z-10">
         <div class="min-w-0">
@@ -35,7 +35,7 @@ const pageDescription =
             </p>
             <div class="flex justify-center flex-row flex-wrap gap-4">
               <BaseButton href="/contact" variant="secondary" size="sm">ITのご相談</BaseButton>
-              <BaseButton href="/business#offerings" variant="primary" size="sm">提供内容を見る</BaseButton>
+              <BaseButton href="#what" variant="primary" size="sm">活動内容を見る</BaseButton>
             </div>
           <div class="mt-8 flex flex-col items-center">
             <img
@@ -61,19 +61,26 @@ const pageDescription =
     </LayoutContainer>
   </section>
 
-  <WhatWeOffer class="bg-void" />
-
   <!-- How -->
-  <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+  <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
     <LayoutContainer>
-      <div class="mb-10 max-w-2xl">
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">How</p>
+      <div class="mb-10 max-w-3xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">{howOffer.label}</p>
         <h2 class="font-display font-bold text-4xl text-cream mb-4" style="letter-spacing: -0.02em;">
-          3つの柱
+          {howOffer.heading}
         </h2>
-        <p class="font-body text-dust text-sm leading-relaxed sm:text-base">
-          Inspire・Amplify・Empowerの3つで、自ら挑戦し、その過程を発信し、ITで他者の挑戦を支えます。
+        <p class="font-body text-dust text-sm leading-relaxed sm:text-base mb-4">
+          {howOffer.lead}
         </p>
+        <p class="font-body text-dust text-sm leading-relaxed sm:text-base mb-4">
+          {howOffer.why}
+        </p>
+        <a
+          href={howOffer.visionHref}
+          class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity"
+        >
+          {howOffer.visionLinkLabel} →
+        </a>
       </div>
       <div class="grid md:grid-cols-3 gap-4">
         {pillars.map((pillar) => (
@@ -86,45 +93,17 @@ const pageDescription =
         ))}
       </div>
       <div class="mt-8 text-right">
-        <a href="/business" class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity">
-          3つの柱を詳しく見る →
+        <a href={howOffer.detailHref} class="font-mono text-xs uppercase tracking-widest text-signal-blue hover:opacity-70 transition-opacity">
+          {howOffer.detailLabel} →
         </a>
       </div>
     </LayoutContainer>
   </section>
 
-  <!-- Values -->
-  <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
-    <LayoutContainer>
-      <div class="mb-10">
-        <p class="font-mono text-xs uppercase tracking-widest text-ash mb-3">Values</p>
-        <h2 class="font-display font-bold text-4xl text-cream" style="letter-spacing: -0.02em;">
-          私たちの価値観
-        </h2>
-      </div>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="p-8 border" style="border-color: var(--border-subtle); border-radius: var(--radius-lg);">
-          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 01</p>
-          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">温故知新</h3>
-          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Standing on Giants' Shoulders</p>
-          <p class="font-body text-dust text-sm leading-relaxed">
-            何かから学ぶという行為は、対象への敬意なくして為し得ない。先人の積み上げた知見と礎に敬意を払い、そこから新たな知を能動的に引き出すことを大切にする。
-          </p>
-        </div>
-        <div class="p-8 border" style="border-color: var(--border-subtle); border-radius: var(--radius-lg);">
-          <p class="font-mono text-xs text-ash uppercase tracking-widest mb-2">Value 02</p>
-          <h3 class="font-display font-semibold text-2xl text-cream mb-1" style="letter-spacing: -0.01em;">パンクたれ！</h3>
-          <p class="font-mono text-xs text-dust uppercase tracking-widest mb-6">Stay Punk!</p>
-          <p class="font-body text-dust text-sm leading-relaxed">
-            挑戦とは常に現状打破である。先人の功績をただ享受するのではなく、次の世代に何かを手渡せるよう、自らの意志で一歩を踏み出す姿勢（Do It Yourself）を持ち続ける。
-          </p>
-        </div>
-      </div>
-    </LayoutContainer>
-  </section>
+  <WhatByPillar class="bg-depth" />
 
   {posts.length > 0 && (
-    <section class="border-t bg-depth py-24" style="border-color: var(--border-subtle);">
+    <section class="border-t bg-void py-24" style="border-color: var(--border-subtle);">
       <LayoutContainer>
         <div class="flex justify-between items-end mb-10">
           <div>
@@ -161,6 +140,6 @@ const pageDescription =
     </section>
   )}
 
-  <PageCta class={posts.length > 0 ? 'bg-void' : 'bg-depth'} />
+  <PageCta class={posts.length > 0 ? 'bg-depth' : 'bg-void'} />
 
 </BaseLayout>
