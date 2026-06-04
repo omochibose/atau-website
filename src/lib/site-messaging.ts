@@ -30,7 +30,7 @@ export const inspireWhat = {
   title: 'Inspire',
   subtitle: '挑戦を生み出す',
   description:
-    'ATAU自身がさまざまな領域に挑戦し続ける活動です。中期的な目標としてスポーツクラブの運営・経営を掲げ、いまは代表がテニスに本気で取り組むところから始めています。既存クラブとの協業やアカデミーへの参画、イベント企画などへ段階的に広げていく予定です。',
+    'ATAU自身がさまざまな領域に挑戦し続ける活動です。中期的な目標としてスポーツクラブの運営・経営を掲げ、その第一歩としていまは代表がテニスに本気で取り組むところから始めています。既存クラブとの協業やアカデミーへの参画、イベント企画などへ段階的に広げていく予定です。',
   href: '/blog/atau_sports_club_vision',
   linkLabel: '背景を読む',
 } as const;
@@ -44,31 +44,59 @@ export const amplifyWhat = {
   linkLabel: 'ブログを見る',
 } as const;
 
-export type EmpowerServiceItem = {
-  label: string;
+export type EmpowerOffering = {
+  title: string;
+  subtitle?: string;
+  description: string;
   href: string;
   external?: boolean;
 };
 
-export const empowerServices: readonly EmpowerServiceItem[] = [
+export const empowerOfferings: readonly EmpowerOffering[] = [
   {
-    label: '外付けIT部門（無料相談窓口）',
+    title: '外付けIT部門',
+    subtitle: '無料相談窓口',
+    description:
+      'ITに関するかかりつけ医として、社内にIT担当がいない中小企業でも気軽に相談できる入口。開発・自動化・相談まで、幅広い課題に伴走します。',
     href: '/blog/atau_external_it_article',
   },
   {
-    label: 'Web集客支援（Web制作・運用）',
-    href: '/blog/atau_branding_article',
+    title: 'Web集客支援',
+    subtitle: 'Web制作・運用',
+    description:
+      '新規サイトの制作から公開後の運用・改修まで。集客やブランディング、社内Wikiなど、Web媒体の整備を一気通貫でサポートします。',
+    href: '/blog/atau_web_support_service',
   },
   {
-    label: 'Intaview（記事執筆AI支援サービス）',
+    title: 'Intaview',
+    subtitle: '記事執筆AI支援サービス',
+    description:
+      'インタビュー形式で話した内容をもとに記事を生成。自社の情報発信の負担を減らし、Webサイトの更新を続けやすくします。',
     href: 'https://intaview.app/',
     external: true,
   },
   {
-    label: '業務自動化・DX導入支援',
+    title: '業務自動化・DX導入支援',
+    description:
+      '業務フローの自動化やツール導入を、クライアントごとの課題に合わせてカスタマイズ。小さく始めて、効果を確認しながら広げます。',
     href: '/blog/atau_dx_article',
   },
 ];
+
+/** WhatByPillar 用の簡易リスト（empowerOfferings から生成） */
+export const empowerServices = empowerOfferings.map((item) => ({
+  label: item.subtitle ? `${item.title}（${item.subtitle}）` : item.title,
+  href: item.href,
+  external: item.external,
+}));
+
+export const empowerOffer = {
+  label: 'Empower',
+  heading: 'クライアントに提供するサービス',
+  lead: 'Empowerは、ATAUがクライアントの挑戦を直接支える事業です。IT部門を持たない中小企業向けに、伴走型で以下のサービスを提供しています。',
+  detailHref: '/blog/atau_what_we_do',
+  detailLabel: 'サービス一覧を詳しく見る',
+} as const;
 
 export const whatOffer = {
   label: 'What',
@@ -76,6 +104,13 @@ export const whatOffer = {
   lead:
     'IT部門を持たない中小企業にとっての、外付けIT部門。システム開発、業務の自動化、IT相談から、小さく始めるDXまで、伴走型で対応します。',
 } as const;
+
+/** @deprecated serviceOfferings — business ページは empowerOfferings を使用 */
+export const serviceOfferings = empowerOfferings.map((item) => ({
+  title: item.title,
+  description: item.description,
+  href: item.href,
+}));
 
 /** リリース済みプロダクトがある場合に WhatWeOffer で表示 */
 export const showProductOfferings = false;
@@ -86,57 +121,21 @@ export const pillars = [
     title: 'Inspire',
     subtitle: '挑戦を生み出す',
     description:
-      '会社として、そこで働く人たちとして、さまざまな領域に挑戦し続ける。ITに限らない挑戦も、その姿勢の一部である。',
-    detailLabel: '具体例',
-    detail:
-      '代表がテニスに本気で取り組むように、メンバーもそれぞれの領域で挑戦する。そこで培う姿勢や学びが、クライアントへの伴走にも活きる。',
+      '現代は満ち足りている一方で、挑戦を始めるきっかけは生まれにくい。自分たちが先に一歩を踏み出し、その姿を見える化することで、「自分も始めてみよう」という触発を社会に届けます。',
   },
   {
     number: '02',
     title: 'Amplify',
     subtitle: '挑戦を広める',
     description:
-      '挑戦の過程を言語化し、発信する。専門性と伴走の姿勢を、契約前から伝える。',
-    detailLabel: 'ITとの関わり',
-    detail:
-      'ブログや事例紹介を通じて、課題の見つけ方や小さな改善の積み重ねを共有する。売り込みではなく、同じ専門領域で語り合える関係を目指す。',
+      '挑戦は、周囲の理解と応援があって初めて続きやすくなる。事例やプロセスを広めることで、「自分にもできるかもしれない」というイメージを増やし、挑戦しやすい空気をつくります。',
   },
   {
     number: '03',
     title: 'Empower',
     subtitle: '挑戦を後押しする',
     description:
-      '外付けIT部門として、開発・自動化・相談・小さなDXで、現場の挑戦を支える。',
-    detailLabel: 'ITとの関わり',
-    detail:
-      'システム開発からRPA・業務改善まで、クライアントのペースに合わせて伴走する。',
-  },
-] as const;
-
-export const serviceOfferings = [
-  {
-    title: '外付けIT部門',
-    description:
-      '専門領域ごとにベンダーを探す負担なく、幅広いIT課題にワンストップで相談できる伴走型の立ち位置。',
-    href: '/blog/atau_choosing_external_it_guide',
-  },
-  {
-    title: 'システム開発',
-    description:
-      '自社オリジナルの業務システムやツールを、小規模から段階的に。AI支援により、従来より低コストな開発も可能。',
-    href: '/blog/atau_dx_article',
-  },
-  {
-    title: '業務の自動化',
-    description:
-      '既存の業務プロセスを大きく変えずに、RPAやスクリプトで負荷の高い作業を自動化。請求業務の短縮など。',
-    href: '/blog/atau_external_it_article',
-  },
-  {
-    title: 'IT相談・小さなDX',
-    description:
-      '「何から手をつけるべきかわからない」段階から。身近な面倒ごとを起点に、小さく試して効果を確認する。',
-    href: '/blog/atau_dx_article',
+      '意志があっても、技術やリソースの壁で挑戦が止まってしまうことがある。培った知見でその壁を下げ、挑戦が現場で形になるよう実務面から支えます。',
   },
 ] as const;
 
