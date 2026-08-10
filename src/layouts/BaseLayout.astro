@@ -51,6 +51,8 @@ const ogImageUrl = new URL(ogImage ?? '/og-default.png', Astro.site).href;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
       rel="stylesheet"
@@ -71,24 +73,6 @@ const ogImageUrl = new URL(ogImage ?? '/og-default.png', Astro.site).href;
       <slot />
     </main>
     <Footer />
-    <!--
-      Netlify Identity: 招待・確認メールは多く / に #invite_token 等で着地するためウィジェットを全ページで読み込む。
-      login / signup で常に /admin へ飛ばさない（セッション復元でも login が走り、プレビュー iframe や通常閲覧が壊れるため）。
-      招待完了後の CMS へはブラウザで /admin/ を開いてもらう。
-    -->
-    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script is:inline>
-      (function () {
-        if (!window.netlifyIdentity) return;
-        window.netlifyIdentity.on('init', function (user) {
-          if (user) return;
-          var h = window.location.hash || '';
-          if (h.indexOf('invite_token') !== -1 || h.indexOf('confirmation_token') !== -1) {
-            window.netlifyIdentity.open('signup');
-          }
-        });
-      })();
-    </script>
     <script is:inline>
       (function () {
         function setScrollProgress() {

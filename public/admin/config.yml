@@ -1,24 +1,25 @@
 # Decap CMS — https://decapcms.org/  管理画面: /admin/
 #
-# バックエンド: git-gateway（Netlify Identity + Git Gateway）
-# → 編集者はメール招待で Netlify Identity に登録するだけ（GitHub アカウント不要）。
-# → コミットは Netlify が GitHub リポジトリに代行する。
+# バックエンド: github（GitHub OAuth 直接連携。編集者は自分のみを想定）
+# → ログイン時、Netlify がホストする OAuth プロバイダ経由で GitHub 認可を行い、
+#   Decap CMS がそのままリポジトリへ直接コミットする（Netlify Identity / Git Gateway は不使用）。
 #
-# Netlify での必須設定（サイトにこの GitHub リポジトリが紐づいている前提）:
-#   1) Site configuration → Identity → Enable Identity
-#   2) Registration: 運用に合わせる（本番は「Invite only」推奨）
-#   3) Identity → Services → Git Gateway → Enable Git Gateway
-#   4) Identity → Invite users で編集者に招待メールを送る（受信者がパスワードを設定）
-#
-# カスタムドメインを Cloudflare のプロキシ（オレンジ雲）経由にしている場合、
-# /.netlify/identity へのリクエストが遮られることがある。その場合は DNS のみにするか、
-# Netlify サブドメインで /admin を開く等の対応が必要な場合があります。
+# 必須設定（このリポジトリ omochibose/atau-website への push 権限を持つ GitHub アカウントで運用する前提）:
+#   1) GitHub → Settings → Developer settings → OAuth Apps → New OAuth App を作成
+#        Homepage URL: https://atau-dd.com
+#        Authorization callback URL: https://api.netlify.com/auth/done
+#      発行された Client ID / Client Secret を控える。
+#   2) Netlify → Site configuration → Access control → OAuth clients → Install provider
+#        Provider: GitHub / 上記の Client ID・Secret を登録
+#   3) ブラウザで https://atau-dd.com/admin/ を開き「Login with GitHub」でログイン
+#      （ログインできるのは、このリポジトリへの書き込み権限を持つ GitHub アカウントのみ）
 #
 # ローカル編集: backend の直後に `local_backend: true` を一時追加し、
 #   `npm run cms:local` を起動。本番用の変更はコミット前に local_backend を削除すること。
 
 backend:
-  name: git-gateway
+  name: github
+  repo: omochibose/atau-website
   branch: main
 
 site_url: https://atau-dd.com

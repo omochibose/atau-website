@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseButton from '../components/BaseButton.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+---
+
+<BaseLayout title="ページが見つかりません" description="お探しのページは見つかりませんでした。">
+  <section class="pt-40 pb-24">
+    <LayoutContainer>
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-4">404</p>
+        <h1
+          class="font-display font-bold text-cream mb-6"
+          style="font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; line-height: 1.1;"
+        >
+          ページが見つかりません
+        </h1>
+        <p class="font-body text-dust text-lg leading-relaxed mb-10">
+          お探しのページは移動または削除された可能性があります。<br />
+          URLをご確認いただくか、下記からトップページへお進みください。
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <BaseButton href="/" variant="primary" size="sm">トップへ</BaseButton>
+          <BaseButton href="/contact" variant="secondary" size="sm">お問い合わせ</BaseButton>
+        </div>
+      </div>
+    </LayoutContainer>
+  </section>
+</BaseLayout>
