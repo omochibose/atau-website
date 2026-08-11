@@ -3,11 +3,12 @@ import BaseButton from './BaseButton.astro';
 import LayoutContainer from './LayoutContainer.astro';
 
 const navLinks = [
-  { href: '/',          label: 'Home',    sub: 'ホーム'   },
-  { href: '/about',    label: 'About',   sub: '会社情報' },
-  { href: '/business', label: 'Offers',  sub: '提供内容' },
-  { href: '/blog',     label: 'Blog',    sub: 'ブログ'   },
-  { href: '/contact',  label: 'Contact', sub: 'お問い合わせ' },
+  { href: '/',          label: 'Home',     sub: 'ホーム'   },
+  { href: '/about',    label: 'About',    sub: '会社情報' },
+  { href: '/business', label: 'Offers',   sub: '提供内容' },
+  { href: '/showcase', label: 'Showcase', sub: '実績'     },
+  { href: '/blog',     label: 'Blog',     sub: 'ブログ'   },
+  { href: '/contact',  label: 'Contact',  sub: 'お問い合わせ' },
 ];
 
 const currentPath = Astro.url.pathname;

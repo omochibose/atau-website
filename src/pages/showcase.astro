@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseButton from '../components/BaseButton.astro';
+import LayoutContainer from '../components/LayoutContainer.astro';
+import PageCta from '../components/PageCta.astro';
+
+const pageDescription =
+  'Intaview・PlayRecapといった自社開発プロダクトから、Web制作・AIチャットボット実装まで。ATAUが実際に手を動かして作ってきたものをご紹介します。';
+
+const showcaseItems = [
+  {
+    category: '自社開発プロダクト',
+    title: 'Intaview',
+    subtitle: 'AIインタビュー記事生成サービス',
+    description:
+      'AIがクライアントの専属インタビュワーとして機能し、テーマに沿ったインタビューの内容をもとに記事を自動生成。最短15分で、発信を「続けられるもの」に変えるサービスです。',
+    href: '/blog/atau_intaview_release',
+    linkLabel: '開発の背景を読む',
+    externalHref: 'https://intaview.app/',
+    externalLabel: 'Intaviewを見る',
+  },
+  {
+    category: '自社開発プロダクト（ベータ版）',
+    title: 'PlayRecap',
+    subtitle: '個人向け映像分析ツール',
+    description:
+      'プロの現場では当たり前の「映像を見て、振り返り、次に活かす」というサイクルを、選手やコーチが自分自身で実践できるシンプルな映像分析ツールです。',
+    href: '/blog/atau_playrecap_release',
+    linkLabel: '開発の背景を読む',
+    externalHref: 'https://playrecap.com/',
+    externalLabel: 'PlayRecapを見る',
+  },
+  {
+    category: 'AI活用実装事例',
+    title: 'RAGチャットボット',
+    subtitle: '自社サイトのAIチャットボット',
+    description:
+      'ブログ記事に根拠がある場合のみ回答し、なければ正直に「わからない」と伝える——ハルシネーション対策を軸に設計したRAG構成のチャットボットを、このサイト自体に実装しています。',
+    href: '/blog/atau_ai_chatbot_case_study',
+    linkLabel: '設計の裏側を読む',
+  },
+  {
+    category: 'Web制作・運用支援',
+    title: 'Webサイト制作・運用',
+    subtitle: '集客・ブランディングのためのWeb支援',
+    description:
+      '新規サイトの制作から公開後の運用・改修まで、一気通貫でサポート。このATAU公式サイト自体も、自社で設計・実装・運用しています。',
+    href: '/blog/atau_web_support_service',
+    linkLabel: '支援内容を読む',
+  },
+];
+---
+
+<BaseLayout title="Showcase" description={pageDescription}>
+
+  <!-- Page Header -->
+  <section class="pt-40 pb-16">
+    <LayoutContainer>
+      <p class="font-mono text-xs uppercase tracking-widest text-signal-gold mb-4">Showcase</p>
+      <h1
+        class="font-display font-bold text-cream mb-6"
+        style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: -0.03em; line-height: 1.0;"
+      >
+        Showcase
+      </h1>
+      <p class="font-body text-dust text-lg max-w-xl leading-relaxed">
+        自社開発プロダクトから、クライアント向けの実装事例まで。ATAUが実際に手を動かして作ってきたものをご紹介します。それぞれの詳しい経緯や設計の考え方は、リンク先のブログ記事でご覧いただけます。
+      </p>
+    </LayoutContainer>
+  </section>
+
+  <!-- Showcase Grid -->
+  <section class="border-t py-16" style="border-color: var(--border-subtle);">
+    <LayoutContainer>
+      <div class="grid md:grid-cols-2 gap-4">
+        {showcaseItems.map((item) => (
+          <div
+            class="p-8 border flex flex-col"
+            style="border-color: var(--border-subtle); border-radius: var(--radius-lg); background-color: var(--color-surface);"
+          >
+            <p class="font-mono text-xs text-signal-blue uppercase tracking-widest mb-4">{item.category}</p>
+            <h2
+              class="font-display font-semibold text-2xl text-cream mb-1"
+              style="letter-spacing: -0.01em;"
+            >
+              {item.title}
+            </h2>
+            <p class="font-mono text-xs uppercase tracking-widest text-dust mb-5">{item.subtitle}</p>
+            <p class="font-body text-dust text-sm leading-relaxed mb-6 flex-1">{item.description}</p>
+            <div class="flex flex-wrap gap-3">
+              <BaseButton href={item.href} variant="secondary" size="sm">
+                {item.linkLabel}
+              </BaseButton>
+              {item.externalHref && (
+                <BaseButton href={item.externalHref} variant="primary" size="sm" target="_blank" rel="noopener noreferrer">
+                  {item.externalLabel}
+                </BaseButton>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </LayoutContainer>
+  </section>
+
+  <PageCta class="bg-void" />
+
+</BaseLayout>
