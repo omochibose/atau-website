@@ -386,4 +386,42 @@ const hasToc = tocHeadings.length > 0;
     border-radius: 12px;
     margin: 1em 0;
   }
+
+  .prose-atau :global(table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.9375rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .prose-atau :global(thead) {
+    display: table-header-group;
+  }
+
+  .prose-atau :global(th),
+  .prose-atau :global(td) {
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--pg-border);
+    white-space: nowrap;
+  }
+
+  .prose-atau :global(th) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--pg-heading);
+    background-color: var(--pg-code-bg);
+  }
+
+  .prose-atau :global(td) {
+    color: var(--pg-text);
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .prose-atau :global(tbody tr:last-child td) {
+    border-bottom: none;
+  }
 </style>
