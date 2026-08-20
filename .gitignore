@@ -7,6 +7,6 @@ node_modules/
 .env.*
 !.env.example
 .astro/
-src/data/blog-embeddings.json
+src/data/site-embeddings.json
 deno.lock
 supabase/.temp/

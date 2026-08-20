@@ -1,7 +1,8 @@
-import blogIndex from '../../src/data/blog-embeddings.json';
+import siteIndex from '../../src/data/site-embeddings.json';
 
-type BlogEmbeddingEntry = {
+type SiteEmbeddingEntry = {
   slug: string;
+  sourceType: 'blog' | 'page';
   title: string;
   description: string;
   url: string;
@@ -207,7 +208,7 @@ export default async (req: Request): Promise<Response> => {
     return json({ error: 'invalid_question' }, 400);
   }
 
-  const index = blogIndex as BlogEmbeddingEntry[];
+  const index = siteIndex as SiteEmbeddingEntry[];
   if (index.length === 0) {
     return json({ answer: null, sources: [], noMatch: true });
   }
