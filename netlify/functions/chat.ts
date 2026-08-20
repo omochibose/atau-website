@@ -12,14 +12,25 @@ type SiteEmbeddingEntry = {
   updatedAt: string;
 };
 
+type HistoryMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+  clarify?: boolean;
+  clarifySlugs?: string[];
+};
+
 type ChatRequest = {
   question: string;
+  history?: HistoryMessage[];
 };
 
 type ChatResponse = {
   answer: string | null;
   sources: { title: string; url: string }[];
   noMatch: boolean;
+  clarify?: boolean;
+  clarifyQuestion?: string | null;
+  clarifySlugs?: string[];
   error?: string;
 };
 
@@ -27,9 +38,12 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
-const THRESHOLD = Number(process.env.SIMILARITY_THRESHOLD ?? '0.72');
+const THRESHOLD = Number(process.env.SIMILARITY_THRESHOLD ?? '0.65');
+const CLARIFY_THRESHOLD = Number(process.env.SIMILARITY_CLARIFY_THRESHOLD ?? '0.6');
 const MAX_QUESTION_LENGTH = 500;
+const MAX_EFFECTIVE_QUERY_LENGTH = 1000;
 const TOP_K = 3;
+const CLARIFY_CANDIDATES = 3;
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 const CLAUDE_MODEL = 'claude-haiku-4-5-20251001';
 
@@ -49,6 +63,17 @@ const SYSTEM_PROMPT = `あなたはATAU Digital Design（ATAU DD）のWebサイ�
    必要な質問には、参考情報に金額等の記載がある場合を除き、
    「詳細については直接お問い合わせください」という旨を添えること。
 6. 出力は必ず有効なJSONのみとし、前後に説明文やMarkdown装飾を含めないこと。`;
+
+const CLARIFY_SYSTEM_PROMPT = `あなたはATAU Digital Design（ATAU DD）のWebサイト上で動作するアシスタントです。
+ユーザーの質問は曖昧、または短すぎて、どの話題について聞きたいのか判断できません。
+以下のルールを厳格に守ってください。
+
+1. 「候補記事」に挙げられたタイトル・概要のみを根拠に、質問の意図を絞り込むための
+   確認質問を1つ、日本語で生成すること。
+2. 確認質問は1文、60文字程度以内、敬体（です・ます調）で書くこと。
+3. 候補記事のタイトルを1〜2個、確認質問の中で具体的に言及すること。
+4. 候補記事にない情報を作り出したり、質問そのものに回答したりしないこと。
+5. 出力は必ずツール呼び出しのみとし、説明文を含めないこと。`;
 
 function json(body: ChatResponse | { error: string }, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -151,6 +176,64 @@ async function callClaude(
   return toolUse.input as { noContext: boolean; answer?: string };
 }
 
+async function callClaudeClarify(
+  candidates: { title: string; description: string }[],
+  question: string
+): Promise<string> {
+  const tools = [
+    {
+      name: 'clarify',
+      description: '曖昧な質問に対して、候補記事から話題を絞り込むための確認質問を生成する',
+      input_schema: {
+        type: 'object',
+        properties: {
+          clarifyQuestion: { type: 'string' },
+        },
+        required: ['clarifyQuestion'],
+      },
+    },
+  ];
+
+  const candidateList = candidates
+    .map((c, i) => `${i + 1}. ${c.title} — ${c.description}`)
+    .join('\n');
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': ANTHROPIC_API_KEY!,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: CLAUDE_MODEL,
+      max_tokens: 200,
+      system: CLARIFY_SYSTEM_PROMPT,
+      tools,
+      tool_choice: { type: 'tool', name: 'clarify' },
+      messages: [
+        {
+          role: 'user',
+          content: `候補記事:\n${candidateList}\n\n質問: ${question}`,
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => '');
+    throw new Error(`Claude API error ${response.status}: ${errText}`);
+  }
+
+  const data = await response.json();
+  const toolUse = data.content?.find((block: { type: string }) => block.type === 'tool_use');
+  if (!toolUse) {
+    throw new Error('Claude response missing tool_use block');
+  }
+
+  return (toolUse.input as { clarifyQuestion: string }).clarifyQuestion;
+}
+
 async function logChatInteraction(entry: {
   question: string;
   matchedTitle: string | null;
@@ -213,7 +296,57 @@ export default async (req: Request): Promise<Response> => {
     return json({ answer: null, sources: [], noMatch: true });
   }
 
+  // 直前のアシスタント発言が確認質問だった場合は、その時点で提示した候補記事を
+  // そのまま文脈として使い、再検索はしない。会話文をそのまま埋め込みに連結すると
+  // 「はい」等のフィラーでスコアが薄まり、かえって検索精度が落ちるため。
+  const history = Array.isArray(body.history) ? body.history : [];
+  const lastTurn = history[history.length - 1];
+  const priorQuestion =
+    lastTurn?.role === 'assistant' && lastTurn.clarify
+      ? [...history].reverse().find((m) => m.role === 'user')?.content
+      : null;
+  const clarifySlugs =
+    lastTurn?.role === 'assistant' && lastTurn.clarify ? lastTurn.clarifySlugs ?? [] : [];
+  const effectiveQuery = (priorQuestion ? `${priorQuestion} ${question}` : question).slice(
+    0,
+    MAX_EFFECTIVE_QUERY_LENGTH
+  );
+
   try {
+    if (clarifySlugs.length > 0) {
+      const relevant = clarifySlugs
+        .map((slug) => index.find((entry) => entry.slug === slug))
+        .filter((entry): entry is SiteEmbeddingEntry => Boolean(entry));
+
+      const context = relevant.map((m) => `【${m.title}】\n${m.fullText}`).join('\n\n---\n\n');
+      const llmResult = await callClaude(context, effectiveQuery);
+
+      if (llmResult.noContext || !llmResult.answer) {
+        await logChatInteraction({
+          question,
+          matchedTitle: relevant[0]?.title ?? null,
+          matchedScore: null,
+          noMatch: true,
+          answer: null,
+        });
+        return json({ answer: null, sources: [], noMatch: true });
+      }
+
+      await logChatInteraction({
+        question,
+        matchedTitle: relevant[0]?.title ?? null,
+        matchedScore: null,
+        noMatch: false,
+        answer: llmResult.answer,
+      });
+
+      return json({
+        answer: llmResult.answer,
+        sources: relevant.map((m) => ({ title: m.title, url: m.url })),
+        noMatch: false,
+      });
+    }
+
     const questionVector = await getGeminiEmbedding(question);
 
     const matches = index
@@ -224,7 +357,7 @@ export default async (req: Request): Promise<Response> => {
     const topScore = matches[0]?.score ?? null;
     const topTitle = matches[0]?.title ?? null;
 
-    if (matches.length === 0 || matches[0].score < THRESHOLD) {
+    if (matches.length === 0 || topScore === null || topScore < CLARIFY_THRESHOLD) {
       await logChatInteraction({
         question,
         matchedTitle: topTitle,
@@ -233,6 +366,31 @@ export default async (req: Request): Promise<Response> => {
         answer: null,
       });
       return json({ answer: null, sources: [], noMatch: true });
+    }
+
+    if (topScore < THRESHOLD) {
+      const candidates = matches.slice(0, CLARIFY_CANDIDATES);
+      const clarifyQuestion = await callClaudeClarify(
+        candidates.map((m) => ({ title: m.title, description: m.description })),
+        question
+      );
+
+      await logChatInteraction({
+        question,
+        matchedTitle: topTitle,
+        matchedScore: topScore,
+        noMatch: false,
+        answer: clarifyQuestion,
+      });
+
+      return json({
+        answer: null,
+        sources: [],
+        noMatch: false,
+        clarify: true,
+        clarifyQuestion,
+        clarifySlugs: candidates.map((m) => m.slug),
+      });
     }
 
     const relevant = matches.filter((m) => m.score >= THRESHOLD);

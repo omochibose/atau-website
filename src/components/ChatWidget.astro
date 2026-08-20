@@ -87,6 +87,8 @@
     content: string;
     sources?: { title: string; url: string }[];
     noMatch?: boolean;
+    clarify?: boolean;
+    clarifySlugs?: string[];
     isError?: boolean;
   };
 
@@ -196,6 +198,13 @@
     const question = input.value.trim();
     if (!question || state.isLoading) return;
 
+    const history = state.messages.map((m) => ({
+      role: m.role,
+      content: m.content,
+      clarify: m.clarify,
+      clarifySlugs: m.clarifySlugs,
+    }));
+
     state.messages.push({ role: 'user', content: question });
     input.value = '';
     setLoading(true);
@@ -205,12 +214,19 @@
       const res = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question, history }),
       });
       const data = await res.json();
 
       if (!res.ok || data.error) {
         state.messages.push({ role: 'assistant', content: FALLBACK_MESSAGE, isError: true });
+      } else if (data.clarify) {
+        state.messages.push({
+          role: 'assistant',
+          content: data.clarifyQuestion ?? '',
+          clarify: true,
+          clarifySlugs: data.clarifySlugs,
+        });
       } else if (data.noMatch) {
         state.messages.push({ role: 'assistant', content: '', noMatch: true });
       } else {
